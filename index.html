@@ -241,7 +241,7 @@
   <div id="scrambled"></div>
   <div id="answer-area"></div>
   <div id="input-row">
-    <input id="answer-input" type="text" placeholder="Type your answer..." autocomplete="off" spellcheck="false">
+    <input id="answer-input" type="text" placeholder="答えを入力..." autocomplete="off" spellcheck="false">
     <button id="submit-btn" onclick="submitAnswer()">OK</button>
   </div>
   <div id="feedback"></div>
@@ -353,14 +353,13 @@ function loadQuestion() {
   hintRevealed = 0;
 
   const scrambled = scrambleWord(current.word);
-  document.getElementById('hint').textContent = `${lang === 'en' ? 'Hint' : 'ヒント'}: ${current.hint}`;
+  document.getElementById('hint').textContent = `ヒント: ${current.hint}`;
   document.getElementById('q-num').textContent = `${questionIndex + 1} / ${TOTAL}`;
   document.getElementById('score').textContent = score;
   document.getElementById('feedback').textContent = '';
   document.getElementById('feedback').className = '';
   document.getElementById('answer-input').value = '';
   document.getElementById('answer-input').className = '';
-  document.getElementById('answer-input').placeholder = lang === 'en' ? 'Type your answer...' : '答えを入力...';
 
   // Render scrambled tiles
   const sc = document.getElementById('scrambled');
@@ -404,7 +403,7 @@ function resetTimer() {
     updateTimerDisplay();
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      showFeedback(lang === 'en' ? `Time's up! Answer: "${current.word}"` : `時間切れ！正解は「${current.word}」`, 'bad');
+      showFeedback(`時間切れ！正解は「${current.word}」`, 'bad');
       setTimeout(nextQuestion, 1400);
     }
   }, 1000);
@@ -430,7 +429,7 @@ function submitAnswer() {
     setTimeout(nextQuestion, 900);
   } else {
     document.getElementById('answer-input').className = 'wrong';
-    showFeedback(lang === 'en' ? 'Wrong… try again!' : '不正解… もう一度！', 'bad');
+    showFeedback('不正解… もう一度！', 'bad');
     setTimeout(() => {
       document.getElementById('answer-input').className = '';
       document.getElementById('answer-input').value = '';
@@ -447,7 +446,7 @@ function nextQuestion() {
 
 function skipWord() {
   clearInterval(timerInterval);
-  showFeedback(lang === 'en' ? `Skipped. Answer: "${current.word}"` : `スキップ。正解は「${current.word}」`, 'bad');
+  showFeedback(`スキップ。正解は「${current.word}」`, 'bad');
   setTimeout(nextQuestion, 1200);
 }
 
