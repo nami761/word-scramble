@@ -353,13 +353,14 @@ function loadQuestion() {
   hintRevealed = 0;
 
   const scrambled = scrambleWord(current.word);
-  document.getElementById('hint').textContent = `ヒント: ${current.hint}`;
+  document.getElementById('hint').textContent = `${lang === 'en' ? 'Hint' : 'ヒント'}: ${current.hint}`;
   document.getElementById('q-num').textContent = `${questionIndex + 1} / ${TOTAL}`;
   document.getElementById('score').textContent = score;
   document.getElementById('feedback').textContent = '';
   document.getElementById('feedback').className = '';
   document.getElementById('answer-input').value = '';
   document.getElementById('answer-input').className = '';
+  document.getElementById('answer-input').placeholder = lang === 'en' ? 'Type your answer...' : '答えを入力...';
 
   // Render scrambled tiles
   const sc = document.getElementById('scrambled');
@@ -403,7 +404,7 @@ function resetTimer() {
     updateTimerDisplay();
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      showFeedback(`時間切れ！正解は「${current.word}」`, 'bad');
+      showFeedback(lang === 'en' ? `Time's up! Answer: "${current.word}"` : `時間切れ！正解は「${current.word}」`, 'bad');
       setTimeout(nextQuestion, 1400);
     }
   }, 1000);
@@ -429,7 +430,7 @@ function submitAnswer() {
     setTimeout(nextQuestion, 900);
   } else {
     document.getElementById('answer-input').className = 'wrong';
-    showFeedback('不正解… もう一度！', 'bad');
+    showFeedback(lang === 'en' ? 'Wrong… try again!' : '不正解… もう一度！', 'bad');
     setTimeout(() => {
       document.getElementById('answer-input').className = '';
       document.getElementById('answer-input').value = '';
@@ -446,7 +447,7 @@ function nextQuestion() {
 
 function skipWord() {
   clearInterval(timerInterval);
-  showFeedback(`スキップ。正解は「${current.word}」`, 'bad');
+  showFeedback(lang === 'en' ? `Skipped. Answer: "${current.word}"` : `スキップ。正解は「${current.word}」`, 'bad');
   setTimeout(nextQuestion, 1200);
 }
 
