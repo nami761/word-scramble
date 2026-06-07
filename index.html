@@ -231,9 +231,9 @@
 </div>
 
 <div id="stats">
-  <div class="stat"><span>スコア</span><span id="score">0</span></div>
-  <div class="stat"><span>問題</span><span id="q-num">1 / 10</span></div>
-  <div class="stat"><span>タイマー</span><span id="timer">15</span></div>
+  <div class="stat"><span id="label-score">Score</span><span id="score">0</span></div>
+  <div class="stat"><span id="label-qnum">Question</span><span id="q-num">1 / 10</span></div>
+  <div class="stat"><span id="label-timer">Timer</span><span id="timer">15</span></div>
 </div>
 
 <div id="game-box">
@@ -246,8 +246,8 @@
   </div>
   <div id="feedback"></div>
   <div id="action-row">
-    <button class="action-btn" onclick="skipWord()">スキップ</button>
-    <button class="action-btn" onclick="showHintLetter()">ヒント (-5pt)</button>
+    <button class="action-btn" id="skip-btn" onclick="skipWord()">Skip</button>
+    <button class="action-btn" id="hint-btn" onclick="showHintLetter()">Hint (-5pt)</button>
   </div>
 </div>
 
@@ -256,11 +256,52 @@
     <h2 id="result-title"></h2>
     <p id="result-score"></p>
     <p id="result-correct"></p>
-    <button id="play-again" onclick="startGame()">もう一度</button>
+    <button id="play-again" onclick="startGame()">Play Again</button>
   </div>
 </div>
 
 <script>
+const STRINGS = {
+  en: {
+    labelScore:      'Score',
+    labelQuestion:   'Question',
+    labelTimer:      'Timer',
+    placeholder:     'Type your answer...',
+    skipBtn:         'Skip',
+    hintBtn:         'Hint (-5pt)',
+    playAgain:       'Play Again',
+    hintLabel:       'Hint',
+    correct:    pts  => `Correct! +${pts}pt`,
+    wrong:           'Wrong… try again!',
+    skipped:    word => `Skipped. Answer: "${word}"`,
+    timesUp:    word => `Time's up! Answer: "${word}"`,
+    resultPerfect:   'Perfect! 🎉',
+    resultGood:      'Well done!',
+    resultRetry:     'Try again!',
+    resultScore: s   => `Score: ${s} pt`,
+    resultCorrect: (c, t) => `Correct: ${c} / ${t}`,
+  },
+  ja: {
+    labelScore:      'スコア',
+    labelQuestion:   '問題',
+    labelTimer:      'タイマー',
+    placeholder:     '答えを入力...',
+    skipBtn:         'スキップ',
+    hintBtn:         'ヒント (-5pt)',
+    playAgain:       'もう一度',
+    hintLabel:       'ヒント',
+    correct:    pts  => `正解！ +${pts}pt`,
+    wrong:           '不正解… もう一度！',
+    skipped:    word => `スキップ。正解は「${word}」`,
+    timesUp:    word => `時間切れ！正解は「${word}」`,
+    resultPerfect:   '完璧！🎉',
+    resultGood:      'よくできました！',
+    resultRetry:     'もう一度挑戦！',
+    resultScore: s   => `スコア: ${s} pt`,
+    resultCorrect: (c, t) => `正解: ${c} / ${t} 問`,
+  }
+};
+
 const WORDS = {
   en: [
     { word: "elephant",  hint: "Large animal with a trunk" },
@@ -311,6 +352,16 @@ let timeLeft = TIME_LIMIT;
 let timerInterval = null;
 let hintRevealed = 0;
 
+function updateStaticUI() {
+  const s = STRINGS[lang];
+  document.getElementById('label-score').textContent   = s.labelScore;
+  document.getElementById('label-qnum').textContent    = s.labelQuestion;
+  document.getElementById('label-timer').textContent   = s.labelTimer;
+  document.getElementById('skip-btn').textContent      = s.skipBtn;
+  document.getElementById('hint-btn').textContent      = s.hintBtn;
+  document.getElementById('play-again').textContent    = s.playAgain;
+}
+
 function setLang(l) {
   lang = l;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === (l === 'en' ? 'English' : '日本語')));
@@ -344,6 +395,7 @@ function startGame() {
   correctCount = 0;
   questionIndex = 0;
   queue = shuffle(WORDS[lang]).slice(0, TOTAL);
+  updateStaticUI();
   loadQuestion();
 }
 
@@ -353,14 +405,15 @@ function loadQuestion() {
   hintRevealed = 0;
 
   const scrambled = scrambleWord(current.word);
-  document.getElementById('hint').textContent = `${lang === 'en' ? 'Hint' : 'ヒント'}: ${current.hint}`;
+  const s = STRINGS[lang];
+  document.getElementById('hint').textContent = `${s.hintLabel}: ${current.hint}`;
   document.getElementById('q-num').textContent = `${questionIndex + 1} / ${TOTAL}`;
   document.getElementById('score').textContent = score;
   document.getElementById('feedback').textContent = '';
   document.getElementById('feedback').className = '';
   document.getElementById('answer-input').value = '';
   document.getElementById('answer-input').className = '';
-  document.getElementById('answer-input').placeholder = lang === 'en' ? 'Type your answer...' : '答えを入力...';
+  document.getElementById('answer-input').placeholder = s.placeholder;
 
   // Render scrambled tiles
   const sc = document.getElementById('scrambled');
@@ -404,7 +457,7 @@ function resetTimer() {
     updateTimerDisplay();
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      showFeedback(lang === 'en' ? `Time's up! Answer: "${current.word}"` : `時間切れ！正解は「${current.word}」`, 'bad');
+      showFeedback(STRINGS[lang].timesUp(current.word), 'bad');
       setTimeout(nextQuestion, 1400);
     }
   }, 1000);
@@ -421,16 +474,17 @@ function submitAnswer() {
   if (!val) return;
   clearInterval(timerInterval);
 
+  const s = STRINGS[lang];
   if (val === current.word) {
     const pts = Math.max(10, timeLeft * 10 - hintRevealed * 5);
     score += pts;
     correctCount++;
     document.getElementById('answer-input').className = 'correct';
-    showFeedback(`正解！ +${pts}pt`, 'good');
+    showFeedback(s.correct(pts), 'good');
     setTimeout(nextQuestion, 900);
   } else {
     document.getElementById('answer-input').className = 'wrong';
-    showFeedback(lang === 'en' ? 'Wrong… try again!' : '不正解… もう一度！', 'bad');
+    showFeedback(s.wrong, 'bad');
     setTimeout(() => {
       document.getElementById('answer-input').className = '';
       document.getElementById('answer-input').value = '';
@@ -447,7 +501,7 @@ function nextQuestion() {
 
 function skipWord() {
   clearInterval(timerInterval);
-  showFeedback(lang === 'en' ? `Skipped. Answer: "${current.word}"` : `スキップ。正解は「${current.word}」`, 'bad');
+  showFeedback(STRINGS[lang].skipped(current.word), 'bad');
   setTimeout(nextQuestion, 1200);
 }
 
@@ -479,11 +533,12 @@ function showFeedback(msg, cls) {
 
 function endGame() {
   clearInterval(timerInterval);
+  const s = STRINGS[lang];
   const pct = Math.round((correctCount / TOTAL) * 100);
-  let title = pct === 100 ? '完璧！🎉' : pct >= 70 ? 'よくできました！' : 'もう一度挑戦！';
+  const title = pct === 100 ? s.resultPerfect : pct >= 70 ? s.resultGood : s.resultRetry;
   document.getElementById('result-title').textContent = title;
-  document.getElementById('result-score').textContent = `スコア: ${score} pt`;
-  document.getElementById('result-correct').textContent = `正解: ${correctCount} / ${TOTAL} 問`;
+  document.getElementById('result-score').textContent = s.resultScore(score);
+  document.getElementById('result-correct').textContent = s.resultCorrect(correctCount, TOTAL);
   document.getElementById('overlay').classList.add('show');
 }
 
