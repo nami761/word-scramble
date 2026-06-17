@@ -7,6 +7,47 @@ WINS_AGAINST = {
     "パー": "グー",
 }
 
+ART = {
+    "グー": [
+        "    _____",
+        "---'   ____)",
+        "      (_____)",
+        "      (_____)",
+        "      (____)",
+        "---.__(___)  ",
+    ],
+    "チョキ": [
+        "    _____",
+        "---'   ____)____",
+        "          ______)",
+        "       __________)",
+        "      (____)",
+        "---.__(___)      ",
+    ],
+    "パー": [
+        "    _______",
+        "---'    ______)____",
+        "           _______)",
+        "          ________)",
+        "         _______)",
+        "---.__________)    ",
+    ],
+}
+
+def print_hands(player, cpu):
+    player_art = ART[player]
+    cpu_art_raw = ART[cpu]
+
+    # Mirror CPU art (flip horizontally) so hands face each other
+    cpu_art = [line[::-1] for line in cpu_art_raw]
+
+    width = 22
+    print()
+    for p_line, c_line in zip(player_art, cpu_art):
+        print(f"  {p_line:<{width}}    {c_line}")
+    print(f"  {'あなた: ' + player:<{width}}    CPU: {cpu}")
+    print()
+
 def get_result(player, cpu):
     if player == cpu:
         return "あいこ"
@@ -38,7 +79,7 @@ def main():
         player = CHOICES[int(choice) - 1]
         cpu = random.choice(CHOICES)
 
-        print(f"\nあなた: {player}  CPU: {cpu}")
+        print_hands(player, cpu)
         result = get_result(player, cpu)
         print(f"結果: {result}\n")
 
