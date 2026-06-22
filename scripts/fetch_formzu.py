@@ -69,7 +69,24 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
             if not is_html(t):
                 return t
 
-    # ② <form> 内の「CSVファイルダウンロード」ボタンを探してPOST
+    # ② GETで直接CSVダウンロードURLを試す（formzuのパターン）
+    parsed = urlparse(page_url)
+    base_action = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
+    form_id_in_url = url_params.get('id', FORM_ID)
+    for go_val in ('csv_dl', 'log_csv', 'logcsv', 'download', 'csvdownload', 'dl',
+                   'show-log-csv', 'log-csv', 'logdata_csv', 'csv'):
+        try:
+            params = dict(url_params)
+            params['go'] = go_val
+            r = s.get(base_action, params=params, timeout=30)
+            t = decode_response(r.content)
+            if not is_html(t):
+                print(f"  CSV取得成功 GET go={go_val}")
+                return t
+        except Exception:
+            pass
+
+    # ③ <form> 内のCSVボタンを探してPOST（select要素も含める）
     for form in soup.find_all('form'):
         csv_btn = None
         for el in form.find_all(['input', 'button', 'a']):
@@ -80,15 +97,25 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
         if not csv_btn:
             continue
 
+        # ボタン情報を診断出力
+        print(f"  ボタン発見: tag={csv_btn.name} type={csv_btn.get('type')} "
+              f"name={csv_btn.get('name')} value={csv_btn.get('value')} "
+              f"onclick={str(csv_btn.get('onclick',''))[:80]}", file=sys.stderr)
+
         action = urljoin(page_url, form.get('action', page_url))
         method = form.get('method', 'post').lower()
 
-        # フォームの全inputを収集
+        # フォームのinput/selectを収集
         data = {}
         for inp in form.find_all('input'):
             n = inp.get('name')
             if n:
                 data[n] = inp.get('value', '')
+        for sel in form.find_all('select'):
+            n = sel.get('name')
+            if n:
+                opt = sel.find('option', selected=True) or sel.find('option')
+                data[n] = opt.get('value', '') if opt else ''
 
         # URLのクエリパラメータ（id= など）をPOSTデータに追加
         for k, v in url_params.items():
@@ -99,8 +126,9 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
         if csv_btn.get('name'):
             data[csv_btn.get('name')] = csv_btn.get('value', '')
 
-        # ボタンにnameがない場合、よくある go パラメータ値を試す
-        go_values_to_try = [data.get('go', '')] + ['csv_dl', 'download', 'logcsv', 'csvdownload', 'dl']
+        # go パラメータ値を試す
+        go_values_to_try = [data.get('go', '')] + ['csv_dl', 'log_csv', 'logcsv',
+                                                    'download', 'csvdownload', 'dl']
         for go_val in go_values_to_try:
             if not go_val:
                 continue
@@ -117,7 +145,7 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
             except Exception as e:
                 print(f"  go={go_val}: エラー {e}")
 
-        print(f"  フォームからCSVを取得できませんでした")
+        print(f"  フォームからCSVを取得できませんでした（go値を全て試しました）")
 
     return None
 
