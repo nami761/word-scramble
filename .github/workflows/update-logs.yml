@@ -9,7 +9,7 @@ on:
       - 'scripts/fetch_formzu.py'
       - '.github/workflows/update-logs.yml'
   schedule:
-    - cron: '0 0,6,12,18 * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
