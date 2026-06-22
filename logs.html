@@ -267,6 +267,25 @@
     #refresh-icon { font-size: 1rem; display: inline-block; }
     #refresh-icon.spinning { animation: spin 0.8s linear infinite; }
     #refresh-status { font-size: 0.78rem; color: #7c6fa0; white-space: nowrap; }
+
+    #fetch-btn {
+      padding: 8px 18px;
+      border-radius: 10px;
+      border: none;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    #fetch-btn:hover { background: #6d28d9; }
+    #fetch-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    #fetch-icon { font-size: 1rem; display: inline-block; }
+    #fetch-icon.spinning { animation: spin 0.8s linear infinite; }
   </style>
 </head>
 <body>
@@ -299,6 +318,9 @@
 
 <!-- Manual refresh bar -->
 <div id="refresh-bar">
+  <button id="fetch-btn" onclick="triggerFetch()">
+    <span id="fetch-icon">☁</span> フォームズから取得
+  </button>
   <button id="refresh-btn" onclick="manualRefresh()">
     <span id="refresh-icon">↻</span> ページを再読み込み
   </button>
@@ -482,6 +504,53 @@ function render() {
     });
     tbody.appendChild(tr2);
   });
+}
+
+async function triggerFetch() {
+  const btn = document.getElementById('fetch-btn');
+  const icon = document.getElementById('fetch-icon');
+  const status = document.getElementById('refresh-status');
+  btn.disabled = true;
+  document.getElementById('refresh-btn').disabled = true;
+  icon.classList.add('spinning');
+  status.textContent = 'フォームズに接続中…';
+
+  try {
+    const res = await fetch('https://formzu-trigger.nami761.workers.dev', { method: 'POST' });
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'ワークフロー起動失敗');
+  } catch (e) {
+    icon.classList.remove('spinning');
+    btn.disabled = false;
+    document.getElementById('refresh-btn').disabled = false;
+    status.textContent = '⚠ 失敗しました: ' + e.message;
+    return;
+  }
+
+  // Poll for CSV changes up to 90 seconds
+  status.textContent = 'データ取得中… (最大90秒)';
+  const prevText = lastCSVText;
+  const deadline = Date.now() + 90000;
+  let updated = false;
+  while (Date.now() < deadline) {
+    await new Promise(r => setTimeout(r, 5000));
+    try {
+      const r2 = await fetch('./logs.csv?t=' + Date.now());
+      const txt = await r2.text();
+      if (txt !== prevText) { updated = true; lastCSVText = txt; break; }
+    } catch (_) {}
+  }
+
+  icon.classList.remove('spinning');
+  btn.disabled = false;
+  document.getElementById('refresh-btn').disabled = false;
+
+  if (updated) {
+    await loadCSV(true);
+    status.textContent = '✨ データを更新しました！ (' + new Date().toLocaleTimeString('ja-JP') + ')';
+  } else {
+    status.textContent = '変更はありませんでした (' + new Date().toLocaleTimeString('ja-JP') + ')';
+  }
 }
 
 async function manualRefresh() {
