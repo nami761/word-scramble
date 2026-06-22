@@ -9,7 +9,7 @@
 import requests
 from bs4 import BeautifulSoup
 import os, sys
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse, parse_qs
 
 FORM_ID   = os.environ.get('FORMZU_ID', '')
 PASSWORD  = os.environ.get('FORMZU_PASSWORD', '')
@@ -53,12 +53,15 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
     """管理ページのHTMLからCSVダウンロードを試みる（リンクまたはフォーム送信）。"""
     soup = BeautifulSoup(html, 'html.parser')
 
+    # URLのクエリパラメータを取得（id= など）
+    url_params = {k: v[0] for k, v in parse_qs(urlparse(page_url).query).items()}
+
     # ① <a href="...csv..."> スタイルのリンクを探す
     for a in soup.find_all('a'):
         href = a.get('href', '')
-        text = a.get_text(strip=True)
+        label = a.get_text(strip=True)
         if any(k in href.lower() for k in ('csv', 'download', 'dl')) \
-           or any(k in text for k in ('CSV', 'ダウンロード')):
+           or any(k in label for k in ('CSV', 'ダウンロード')):
             url = urljoin(page_url, href)
             print(f"  CSVリンク発見: {url}")
             r = s.get(url, timeout=30)
@@ -79,25 +82,42 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
 
         action = urljoin(page_url, form.get('action', page_url))
         method = form.get('method', 'post').lower()
+
+        # フォームの全inputを収集
         data = {}
         for inp in form.find_all('input'):
             n = inp.get('name')
             if n:
                 data[n] = inp.get('value', '')
+
+        # URLのクエリパラメータ（id= など）をPOSTデータに追加
+        for k, v in url_params.items():
+            if k not in data:
+                data[k] = v
+
         # ボタン自身のname/valueも送る
         if csv_btn.get('name'):
             data[csv_btn.get('name')] = csv_btn.get('value', '')
 
-        print(f"  CSVフォーム送信: {method.upper()} {action}  data={list(data.keys())}")
-        if method == 'post':
-            r = s.post(action, data=data, timeout=30)
-        else:
-            r = s.get(action, params=data, timeout=30)
+        # ボタンにnameがない場合、よくある go パラメータ値を試す
+        go_values_to_try = [data.get('go', '')] + ['csv_dl', 'download', 'logcsv', 'csvdownload', 'dl']
+        for go_val in go_values_to_try:
+            if not go_val:
+                continue
+            data['go'] = go_val
+            print(f"  CSVフォーム送信: {method.upper()} {action} go={go_val}")
+            try:
+                if method == 'post':
+                    r = s.post(action, data=data, timeout=30)
+                else:
+                    r = s.get(action, params=data, timeout=30)
+                t = decode_response(r.content)
+                if not is_html(t):
+                    return t
+            except Exception as e:
+                print(f"  go={go_val}: エラー {e}")
 
-        t = decode_response(r.content)
-        if not is_html(t):
-            return t
-        print(f"  フォーム送信後もHTMLが返されました（{len(t)} chars）")
+        print(f"  フォームからCSVを取得できませんでした")
 
     return None
 
