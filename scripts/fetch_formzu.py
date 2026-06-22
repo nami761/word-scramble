@@ -45,16 +45,7 @@ def decode_response(content: bytes) -> str:
     return content.decode('utf-8', errors='replace')
 
 
-# ── ①  直接URLが設定されている場合はそこから取得 ──────────────
-if CSV_URL_OVERRIDE:
-    print(f"直接URL指定で取得: {CSV_URL_OVERRIDE}")
-    r = s.get(CSV_URL_OVERRIDE, timeout=30)
-    r.raise_for_status()
-    save_csv(decode_response(r.content))
-    sys.exit(0)
-
-
-# ── ② ログインページを取得してフォームを解析 ─────────────────
+# ── ① ログインページを取得してフォームを解析 ──────────────────
 print(f"フォームズにログイン中（フォームID: {FORM_ID}）...")
 r = s.get(f'{BASE}/login_form', timeout=30)
 r.raise_for_status()
@@ -93,17 +84,23 @@ if 'login' in r.url.lower():
     sys.exit(1)
 
 # ── ④ CSVダウンロードリンクを探す ────────────────────────────
-def find_csv_link(html: str, base: str):
-    soup = BeautifulSoup(html, 'html.parser')
-    for a in soup.find_all('a'):
-        href = a.get('href', '')
-        text = a.get_text(strip=True)
-        if any(k in href.lower() for k in ('csv', 'download', 'dl')) \
-           or any(k in text for k in ('CSV', 'ダウンロード', 'csv')):
-            return urljoin(base, href)
-    return None
 
-csv_url = find_csv_link(r.text, r.url)
+# 直接URLが設定されている場合はログイン済みセッションでそこへアクセス
+if CSV_URL_OVERRIDE:
+    print(f"直接URL指定で取得（ログイン済みセッション使用）: {CSV_URL_OVERRIDE}")
+    csv_url = CSV_URL_OVERRIDE
+else:
+    def find_csv_link(html: str, base: str):
+        soup = BeautifulSoup(html, 'html.parser')
+        for a in soup.find_all('a'):
+            href = a.get('href', '')
+            text = a.get_text(strip=True)
+            if any(k in href.lower() for k in ('csv', 'download', 'dl')) \
+               or any(k in text for k in ('CSV', 'ダウンロード', 'csv')):
+                return urljoin(base, href)
+        return None
+
+    csv_url = find_csv_link(r.text, r.url)
 
 # 見つからなければ受信データページを直接試みる
 if not csv_url:
