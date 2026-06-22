@@ -1,4 +1,4 @@
-name: フォームログ自動更新
+name: Update Form Logs
 
 on:
   schedule:
