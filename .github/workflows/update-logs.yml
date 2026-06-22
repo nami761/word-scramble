@@ -44,5 +44,6 @@ jobs:
             echo "No changes"
           else
             git commit -m "Update form logs $(date '+%Y-%m-%d %H:%M UTC')"
+            git pull --rebase origin master
             git push
           fi
