@@ -6,6 +6,7 @@
   FORMZU_PASSWORD : フォームのパスワード
   FORMZU_CSV_URL  : (任意) ログデータ管理ページのURL（自動検出に失敗した場合に設定）
 """
+import re
 import requests
 from bs4 import BeautifulSoup
 import os, sys
@@ -55,6 +56,52 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
 
     # URLのクエリパラメータを取得（id= など）
     url_params = {k: v[0] for k, v in parse_qs(urlparse(page_url).query).items()}
+    parsed = urlparse(page_url)
+    base_action = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
+
+    # ⓪ JavaScriptの goDownLoadMailLog / ダウンロード関数を解析
+    for script in soup.find_all('script'):
+        src = script.string or ''
+        if not any(k in src for k in ('goDownLoad', 'MailLog', 'csv', 'CSV')):
+            continue
+        # 関数定義を探す
+        fn_match = re.search(
+            r'function\s+\w*[Dd]own[Ll]oad\w*\s*\([^)]*\)\s*\{(.*?)\}',
+            src, re.DOTALL)
+        if fn_match:
+            fn_body = fn_match.group(1)
+            print(f"  JS関数本体: {fn_body[:400]}", file=sys.stderr)
+            # go.value = '...' パターンを探す
+            m = re.search(r'\.go\.value\s*=\s*[\'"]([^\'"]+)[\'"]', fn_body)
+            if m:
+                go_val = m.group(1)
+                print(f"  JS go値発見: {go_val}")
+                # そのフォームを探してsubmit
+                for form in soup.find_all('form'):
+                    action = urljoin(page_url, form.get('action', page_url))
+                    data = {}
+                    for inp in form.find_all('input'):
+                        n = inp.get('name')
+                        if n:
+                            data[n] = inp.get('value', '')
+                    for sel in form.find_all('select'):
+                        n = sel.get('name')
+                        if n:
+                            opt = sel.find('option', selected=True) or sel.find('option')
+                            data[n] = opt.get('value', '') if opt else ''
+                    for k, v in url_params.items():
+                        if k not in data:
+                            data[k] = v
+                    data['go'] = go_val
+                    print(f"  JS go値でPOST: {action}")
+                    r = s.post(action, data=data, timeout=30)
+                    t = decode_response(r.content)
+                    if not is_html(t):
+                        return t
+        # URLパターンを探す（window.location やリダイレクト）
+        url_matches = re.findall(r'[\'"]([^\'"]*assemble-form[^\'"]*)[\'"]', src)
+        for url_candidate in url_matches:
+            print(f"  JSのURL候補: {url_candidate}", file=sys.stderr)
 
     # ① <a href="...csv..."> スタイルのリンクを探す
     for a in soup.find_all('a'):
@@ -70,8 +117,6 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
                 return t
 
     # ② GETで直接CSVダウンロードURLを試す（formzuのパターン）
-    parsed = urlparse(page_url)
-    base_action = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
     form_id_in_url = url_params.get('id', FORM_ID)
     for go_val in ('csv_dl', 'log_csv', 'logcsv', 'download', 'csvdownload', 'dl',
                    'show-log-csv', 'log-csv', 'logdata_csv', 'csv'):
