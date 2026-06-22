@@ -199,10 +199,11 @@
 
     /* 様子セル */
     .note-cell {
-      max-width: 360px;
+      max-width: 400px;
       font-size: 0.84rem;
       color: #5b4fa0;
-      line-height: 1.6;
+      line-height: 1.7;
+      white-space: pre-wrap;
     }
 
     /* 日付セル */
@@ -467,9 +468,9 @@ function render() {
       } else if (i === COL.book) {
         td.className = 'book-cell';
         td.textContent = val;
-      } else if (i === COL.note) {
+      } else if (i === COL.note || i === COL.memo) {
         td.className = 'note-cell';
-        td.textContent = val;
+        td.innerHTML = val.replace(/\[br\]/gi, '<br>');
       } else if (i === COL.time) {
         td.className = 'meta-cell';
         td.textContent = val;
