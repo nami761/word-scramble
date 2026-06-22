@@ -3,110 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>フォームログ 一覧</title>
+  <title>西小 読み聞かせ記録ノート</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
       background: #0f0f1a;
       color: #e0e0ff;
       min-height: 100vh;
-      padding: 32px 24px;
+      padding: 28px 20px;
     }
 
     header {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
-    h1 {
-      font-size: 1.6rem;
-      letter-spacing: 0.15em;
+    .title-block h1 {
+      font-size: 1.45rem;
+      letter-spacing: 0.08em;
       color: #a78bfa;
-      text-shadow: 0 0 18px #7c3aed88;
+      text-shadow: 0 0 18px #7c3aed66;
+    }
+    .title-block p {
+      font-size: 0.78rem;
+      color: #6b6b9a;
+      margin-top: 4px;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* How-to banner */
-    #howto {
-      background: #1a1a2e;
-      border: 1px solid #3d3d7a;
-      border-left: 4px solid #a78bfa;
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin-bottom: 24px;
-      font-size: 0.82rem;
-      line-height: 1.9;
-      color: #c4b5fd;
-    }
-    #howto summary {
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: bold;
-      color: #a78bfa;
-      letter-spacing: 0.05em;
-      list-style: none;
-    }
-    #howto summary::before { content: '▶ '; }
-    #howto[open] summary::before { content: '▼ '; }
-    #howto ol { padding-left: 1.4em; margin-top: 10px; }
-    #howto li { margin-bottom: 4px; }
-    #howto code {
-      background: #252545;
-      padding: 1px 6px;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 0.85em;
-      color: #fbbf24;
-    }
-    #howto a { color: #a78bfa; }
-
-    /* Filter row */
-    #filter-row {
-      display: flex;
       gap: 10px;
-      margin-bottom: 16px;
       flex-wrap: wrap;
-      align-items: center;
     }
-    #search {
-      flex: 1;
-      min-width: 200px;
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1.5px solid #3d3d7a;
-      background: #0f0f1a;
-      color: #e0e0ff;
-      font-size: 0.9rem;
-      outline: none;
-    }
-    #search:focus { border-color: #7c3aed; }
-
-    #count { font-size: 0.8rem; color: #6b6b9a; white-space: nowrap; }
-    #updated { font-size: 0.78rem; color: #6b6b9a; }
 
     .btn {
-      padding: 7px 18px;
+      padding: 7px 16px;
       border-radius: 8px;
       border: 1px solid #4f46e5;
       background: transparent;
       color: #a78bfa;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       transition: background 0.2s;
+      white-space: nowrap;
     }
     .btn:hover { background: #2d2d5a; }
+
+    a.form-link {
+      padding: 7px 16px;
+      border-radius: 8px;
+      background: #4f46e5;
+      color: #fff;
+      font-size: 0.82rem;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    a.form-link:hover { background: #6d64f5; }
+
+    /* How-to */
+    details#howto {
+      background: #1a1a2e;
+      border: 1px solid #3d3d7a;
+      border-left: 4px solid #a78bfa;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      font-size: 0.8rem;
+      line-height: 1.9;
+      color: #c4b5fd;
+    }
+    details#howto summary {
+      cursor: pointer;
+      font-size: 0.83rem;
+      font-weight: bold;
+      color: #a78bfa;
+      list-style: none;
+    }
+    details#howto summary::before { content: '▶ '; }
+    details#howto[open] summary::before { content: '▼ '; }
+    details#howto ol { padding-left: 1.4em; margin-top: 10px; }
+    details#howto li { margin-bottom: 6px; }
+    details#howto code {
+      background: #252545;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.88em;
+      color: #fbbf24;
+    }
+    details#howto a { color: #a78bfa; }
+
+    /* Filter bar */
+    #filter-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    #search {
+      flex: 1;
+      min-width: 180px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #3d3d7a;
+      background: #0f0f1a;
+      color: #e0e0ff;
+      font-size: 0.88rem;
+      outline: none;
+    }
+    #search:focus { border-color: #7c3aed; }
+
+    .grade-btn {
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1.5px solid #3d3d7a;
+      background: transparent;
+      color: #8888bb;
+      cursor: pointer;
+      font-size: 0.78rem;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .grade-btn:hover { border-color: #7c3aed; color: #c4b5fd; }
+    .grade-btn.active { background: #4f46e5; border-color: #4f46e5; color: #fff; }
+
+    #count { font-size: 0.78rem; color: #6b6b9a; white-space: nowrap; }
+    #updated { font-size: 0.75rem; color: #6b6b9a; white-space: nowrap; }
 
     /* Table */
     .table-wrap {
@@ -118,15 +150,15 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
     }
 
     thead th {
       background: #1a1a2e;
-      padding: 12px 16px;
+      padding: 11px 14px;
       text-align: left;
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
       color: #6b6b9a;
       white-space: nowrap;
       cursor: pointer;
@@ -139,27 +171,55 @@
 
     tbody tr { border-bottom: 1px solid #1e1e3a; transition: background 0.15s; }
     tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: #1a1a2e; }
+    tbody tr:hover { background: #18182e; }
 
     tbody td {
-      padding: 11px 16px;
+      padding: 10px 14px;
       color: #c4b5fd;
       vertical-align: top;
       word-break: break-word;
-      max-width: 320px;
     }
 
-    /* State messages */
+    /* 学年バッジ */
+    .grade-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    .g1 { background: #1e3a5f; color: #60a5fa; }
+    .g2 { background: #1a3a2a; color: #34d399; }
+    .g3 { background: #3a2a1a; color: #fb923c; }
+    .g4 { background: #2a1a3a; color: #c084fc; }
+    .g5 { background: #3a1a1a; color: #f87171; }
+
+    /* 様子セル */
+    .note-cell {
+      max-width: 360px;
+      font-size: 0.84rem;
+      color: #b0b0d8;
+      line-height: 1.6;
+    }
+
+    /* 受付番号・日付セル */
+    .meta-cell { color: #6b6b9a; font-size: 0.75rem; white-space: nowrap; }
+
+    /* 本タイトル */
+    .book-cell { color: #fbbf24; font-weight: 500; }
+
+    /* State */
     #message {
       text-align: center;
       padding: 60px 24px;
       color: #6b6b9a;
-      font-size: 0.95rem;
-      line-height: 1.8;
+      font-size: 0.92rem;
+      line-height: 1.9;
     }
     .spinner {
       display: inline-block;
-      width: 20px; height: 20px;
+      width: 18px; height: 18px;
       border: 3px solid #2d2d5a;
       border-top-color: #a78bfa;
       border-radius: 50%;
@@ -168,41 +228,50 @@
       margin-right: 8px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .err { color: #f87171; }
 
-    a.back { font-size: 0.85rem; color: #6b6b9a; text-decoration: none; }
+    a.back { font-size: 0.82rem; color: #6b6b9a; text-decoration: none; }
     a.back:hover { color: #a78bfa; }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>FORMS LOG</h1>
+  <div class="title-block">
+    <h1>⭐ 西小 読み聞かせ記録ノート</h1>
+    <p>フォームズに送信されたログの一覧</p>
+  </div>
   <div class="header-right">
-    <button class="btn" onclick="load()">更新</button>
-    <a class="back" href="index.html">← ゲームへ</a>
+    <button class="btn" onclick="loadCSV()">更新</button>
+    <a class="form-link" href="https://ws.formzu.net/dist/S950893888/" target="_blank">フォームに記録する</a>
+    <a class="back" href="index.html">← トップ</a>
   </div>
 </header>
 
-<!-- How-to -->
 <details id="howto">
-  <summary>フォームズのログを反映させる方法</summary>
+  <summary>このページを最新データに更新する方法</summary>
   <ol>
-    <li><a href="https://www.formzu.com/" target="_blank">フォームズ（formzu.com）</a> にログインしてフォームを開く</li>
-    <li>「受信データ」→「CSVダウンロード」でデータを取得</li>
-    <li>ダウンロードした CSV ファイルの名前を <code>logs.csv</code> に変更</li>
-    <li>GitHub のこのリポジトリを開き、<code>logs.csv</code> ファイルを選択 → 鉛筆アイコン（編集）→ 内容を貼り付けて「Commit changes」</li>
-    <li>数分後に GitHub Pages が自動更新され、このページに反映されます</li>
+    <li><a href="https://www.formzu.com/" target="_blank">フォームズ（formzu.com）</a> にログインして対象フォームを開く</li>
+    <li>「受信データ」→「<strong>CSVダウンロード</strong>」をクリック</li>
+    <li>ダウンロードしたファイル名を <code>logs.csv</code> に変更する</li>
+    <li>GitHub のリポジトリで <code>logs.csv</code> を開き、鉛筆アイコン（Edit）をクリック</li>
+    <li>内容を全選択して削除 → ダウンロードした CSV の内容を貼り付けて「Commit changes」</li>
+    <li>数分後にこのページが自動更新されます</li>
   </ol>
-  <div style="margin-top:10px;color:#6b6b9a;">
-    ※ CSV の1行目はヘッダー行として扱われます。フォームのフィールド名がそのまま列名になります。
+  <div style="margin-top:8px;color:#6b6b9a;font-size:0.78rem;">
+    ※ メールで届いたログをコピーして手動で行を追加することもできます。
   </div>
 </details>
 
-<!-- Filter -->
-<div id="filter-row">
-  <input id="search" type="text" placeholder="キーワードで絞り込み…" oninput="render()">
+<!-- Filter bar -->
+<div id="filter-bar">
+  <input id="search" type="text" placeholder="本のタイトル・読み手名などで検索…" oninput="render()">
+  <button class="grade-btn active" data-grade="all" onclick="setGrade('all')">全学年</button>
+  <button class="grade-btn" data-grade="1年生" onclick="setGrade('1年生')">1年生</button>
+  <button class="grade-btn" data-grade="2年生" onclick="setGrade('2年生')">2年生</button>
+  <button class="grade-btn" data-grade="3年生" onclick="setGrade('3年生')">3年生</button>
+  <button class="grade-btn" data-grade="4年生" onclick="setGrade('4年生')">4年生</button>
+  <button class="grade-btn" data-grade="5年生" onclick="setGrade('5年生')">5年生</button>
   <span id="count"></span>
   <span id="updated"></span>
 </div>
@@ -217,69 +286,94 @@
 </div>
 
 <script>
-let allRows = [], headers = [], sortCol = -1, sortAsc = true;
+// --- フォームズの CSV ヘッダーに合わせた列インデックス ---
+const COL = {
+  id:    0,  // 受付番号
+  time:  1,  // 送信日時
+  name:  2,  // 読み手名
+  date:  3,  // 読み聞かせ日
+  grade: 4,  // 学年
+  book:  5,  // 本のタイトル
+  note:  6,  // 子どもたちの様子
+};
+
+const GRADE_CLASS = { '1年生':'g1','2年生':'g2','3年生':'g3','4年生':'g4','5年生':'g5' };
+
+let allRows = [], headers = [];
+let sortCol = -1, sortAsc = true;
+let gradeFilter = 'all';
 
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/).filter(Boolean);
-  if (lines.length < 1) return { headers: [], rows: [] };
-
+  if (!lines.length) return { headers: [], rows: [] };
   const parse = line => {
     const cols = []; let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') { inQ = !inQ; }
+    for (const c of line) {
+      if (c === '"') inQ = !inQ;
       else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
       else cur += c;
     }
     cols.push(cur.trim());
     return cols;
   };
-
-  return {
-    headers: parse(lines[0]),
-    rows: lines.slice(1).map(parse)
-  };
+  return { headers: parse(lines[0]), rows: lines.slice(1).map(parse) };
 }
 
-async function load() {
-  document.getElementById('message').innerHTML = '<span class="spinner"></span>読み込み中…';
-  document.getElementById('message').style.display = 'block';
+async function loadCSV() {
+  const msg = document.getElementById('message');
+  msg.innerHTML = '<span class="spinner"></span>読み込み中…';
+  msg.style.display = 'block';
   document.getElementById('tbl').style.display = 'none';
 
   try {
     const res = await fetch('./logs.csv?t=' + Date.now());
-    if (!res.ok) throw new Error(`ファイルが見つかりません (HTTP ${res.status})`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
     const { headers: h, rows: r } = parseCSV(text);
-    if (!h.length) throw new Error('CSV が空、またはヘッダー行がありません');
+    if (!h.length) throw new Error('CSV が空です');
     headers = h;
     allRows = r;
     sortCol = -1;
-    document.getElementById('updated').textContent = '最終読込: ' + new Date().toLocaleTimeString('ja-JP');
+    document.getElementById('updated').textContent = '更新: ' + new Date().toLocaleString('ja-JP');
     render();
-    document.getElementById('message').style.display = 'none';
+    msg.style.display = 'none';
     document.getElementById('tbl').style.display = '';
   } catch (e) {
-    document.getElementById('message').innerHTML =
-      `<span class="err">⚠ ${e.message}</span><br><br>` +
-      `上の「フォームズのログを反映させる方法」を参考に <code>logs.csv</code> をアップロードしてください。`;
+    msg.innerHTML =
+      `<span class="err">⚠ データを読み込めませんでした（${e.message}）</span><br><br>` +
+      `上の手順で <code>logs.csv</code> をリポジトリに追加してください。`;
   }
+}
+
+function setGrade(g) {
+  gradeFilter = g;
+  document.querySelectorAll('.grade-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.grade === g);
+  });
+  render();
 }
 
 function render() {
   const q = document.getElementById('search').value.toLowerCase();
-  let rows = allRows.filter(r => !q || r.some(c => c.toLowerCase().includes(q)));
+  let rows = allRows.filter(r => {
+    const gradeOk = gradeFilter === 'all' || (r[COL.grade] || '') === gradeFilter;
+    const searchOk = !q || r.some(c => c.toLowerCase().includes(q));
+    return gradeOk && searchOk;
+  });
 
   if (sortCol >= 0) {
     rows.sort((a, b) => {
       const av = a[sortCol] || '', bv = b[sortCol] || '';
       return sortAsc ? av.localeCompare(bv, 'ja') : bv.localeCompare(av, 'ja');
     });
+  } else {
+    // デフォルトは新着順（受付番号 降順）
+    rows = [...rows].reverse();
   }
 
-  document.getElementById('count').textContent = `${rows.length} / ${allRows.length} 件`;
+  document.getElementById('count').textContent = `${rows.length} 件`;
 
-  // Headers
+  // ヘッダー描画
   const tr = document.getElementById('thead-row');
   tr.innerHTML = '';
   headers.forEach((h, i) => {
@@ -290,21 +384,40 @@ function render() {
     tr.appendChild(th);
   });
 
-  // Rows
+  // 行描画
   const tbody = document.getElementById('tbody');
   tbody.innerHTML = '';
   rows.forEach(row => {
     const tr2 = document.createElement('tr');
     headers.forEach((_, i) => {
       const td = document.createElement('td');
-      td.textContent = row[i] ?? '';
+      const val = row[i] ?? '';
+
+      if (i === COL.grade) {
+        const badge = document.createElement('span');
+        badge.className = 'grade-badge ' + (GRADE_CLASS[val] || '');
+        badge.textContent = val;
+        td.appendChild(badge);
+      } else if (i === COL.book) {
+        td.className = 'book-cell';
+        td.textContent = val;
+      } else if (i === COL.note) {
+        td.className = 'note-cell';
+        td.textContent = val;
+      } else if (i === COL.id || i === COL.time) {
+        td.className = 'meta-cell';
+        td.textContent = val;
+      } else {
+        td.textContent = val;
+      }
+
       tr2.appendChild(td);
     });
     tbody.appendChild(tr2);
   });
 }
 
-load();
+loadCSV();
 </script>
 </body>
 </html>
