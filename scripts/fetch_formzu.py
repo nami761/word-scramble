@@ -65,12 +65,23 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
         if not any(k in src for k in ('goDownLoad', 'MailLog', 'csv', 'CSV')):
             continue
         # 関数定義を探す
-        fn_match = re.search(
-            r'function\s+\w*[Dd]own[Ll]oad\w*\s*\([^)]*\)\s*\{(.*?)\}',
-            src, re.DOTALL)
+        # ブレースカウンターで完全な関数本体を取得
+        fn_header = re.search(r'function\s+\w*[Dd]own[Ll]oad\w*\s*\([^)]*\)\s*\{', src)
+        if fn_header:
+            brace_start = fn_header.end() - 1
+            depth, i = 0, brace_start
+            while i < len(src):
+                if src[i] == '{': depth += 1
+                elif src[i] == '}':
+                    depth -= 1
+                    if depth == 0:
+                        fn_body = src[brace_start+1:i]
+                        print(f"  JS関数本体（完全）:\n{fn_body}", file=sys.stderr)
+                        break
+                i += 1
+        fn_match = fn_header  # 後続コードとの互換性のため
         if fn_match:
-            fn_body = fn_match.group(1)
-            print(f"  JS関数本体:\n{fn_body[:2000]}", file=sys.stderr)
+            fn_body = src[fn_header.end():i] if fn_header else ''
             # go.value = '...' パターンを探す
             m = re.search(r'\.go\.value\s*=\s*[\'"]([^\'"]+)[\'"]', fn_body)
             if m:
