@@ -129,8 +129,8 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
 
     # ② GETで直接CSVダウンロードURLを試す（formzuのパターン）
     form_id_in_url = url_params.get('id', FORM_ID)
-    for go_val in ('csv_dl', 'log_csv', 'logcsv', 'download', 'csvdownload', 'dl',
-                   'show-log-csv', 'log-csv', 'logdata_csv', 'csv'):
+    for go_val in ('download-maillog', 'csv_dl', 'log_csv', 'logcsv', 'download',
+                   'csvdownload', 'dl', 'show-log-csv', 'log-csv', 'logdata_csv', 'csv'):
         try:
             params = dict(url_params)
             params['go'] = go_val
