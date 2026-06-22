@@ -204,7 +204,7 @@
       line-height: 1.6;
     }
 
-    /* 受付番号・日付セル */
+    /* 日付セル */
     .meta-cell { color: #6b6b9a; font-size: 0.75rem; white-space: nowrap; }
 
     /* 本タイトル */
@@ -290,14 +290,13 @@
 <script>
 // --- フォームズの CSV ヘッダーに合わせた列インデックス ---
 const COL = {
-  id:    0,  // 受付番号
-  time:  1,  // 送信日時
-  name:  2,  // 読み手名
-  date:  3,  // 読み聞かせ日
-  grade: 4,  // 学年
-  book:  5,  // 本のタイトル
-  note:  6,  // 子どもたちの様子
-  memo:  7,  // その他 気づいた事やメモなど
+  time:  0,  // 日付
+  name:  1,  // 読み手名
+  date:  2,  // 読み聞かせ日
+  grade: 3,  // 学　年
+  book:  4,  // 本のタイトル
+  note:  5,  // 子どもたちの様子
+  memo:  6,  // その他　気づいた事やメモなど
 };
 
 const GRADE_CLASS = { '1年生':'g1','2年生':'g2','3年生':'g3','4年生':'g4','5年生':'g5','6年生':'g6' };
@@ -370,7 +369,6 @@ function render() {
       return sortAsc ? av.localeCompare(bv, 'ja') : bv.localeCompare(av, 'ja');
     });
   } else {
-    // デフォルトは新着順（受付番号 降順）
     rows = [...rows].reverse();
   }
 
@@ -407,7 +405,7 @@ function render() {
       } else if (i === COL.note) {
         td.className = 'note-cell';
         td.textContent = val;
-      } else if (i === COL.id || i === COL.time) {
+      } else if (i === COL.time) {
         td.className = 'meta-cell';
         td.textContent = val;
       } else {
