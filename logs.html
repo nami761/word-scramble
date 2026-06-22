@@ -9,8 +9,8 @@
 
     body {
       font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
-      background: #0f0f1a;
-      color: #e0e0ff;
+      background: #f3f0ff;
+      color: #2d1f6e;
       min-height: 100vh;
       padding: 28px 20px;
     }
@@ -27,12 +27,11 @@
     .title-block h1 {
       font-size: 1.45rem;
       letter-spacing: 0.08em;
-      color: #a78bfa;
-      text-shadow: 0 0 18px #7c3aed66;
+      color: #6d28d9;
     }
     .title-block p {
       font-size: 0.78rem;
-      color: #6b6b9a;
+      color: #7c6fa0;
       margin-top: 4px;
     }
 
@@ -46,45 +45,45 @@
     .btn {
       padding: 7px 16px;
       border-radius: 8px;
-      border: 1px solid #4f46e5;
-      background: transparent;
-      color: #a78bfa;
+      border: 1.5px solid #7c3aed;
+      background: #fff;
+      color: #7c3aed;
       cursor: pointer;
       font-size: 0.82rem;
       transition: background 0.2s;
       white-space: nowrap;
     }
-    .btn:hover { background: #2d2d5a; }
+    .btn:hover { background: #ede9fe; }
 
     a.form-link {
       padding: 7px 16px;
       border-radius: 8px;
-      background: #4f46e5;
+      background: #7c3aed;
       color: #fff;
       font-size: 0.82rem;
       text-decoration: none;
       white-space: nowrap;
       transition: background 0.2s;
     }
-    a.form-link:hover { background: #6d64f5; }
+    a.form-link:hover { background: #6d28d9; }
 
     /* How-to */
     details#howto {
-      background: #1a1a2e;
-      border: 1px solid #3d3d7a;
-      border-left: 4px solid #a78bfa;
+      background: #fff;
+      border: 1px solid #ddd6fe;
+      border-left: 4px solid #7c3aed;
       border-radius: 10px;
       padding: 14px 18px;
       margin-bottom: 20px;
       font-size: 0.8rem;
       line-height: 1.9;
-      color: #c4b5fd;
+      color: #4c3a8a;
     }
     details#howto summary {
       cursor: pointer;
       font-size: 0.83rem;
       font-weight: bold;
-      color: #a78bfa;
+      color: #6d28d9;
       list-style: none;
     }
     details#howto summary::before { content: '▶ '; }
@@ -92,14 +91,14 @@
     details#howto ol { padding-left: 1.4em; margin-top: 10px; }
     details#howto li { margin-bottom: 6px; }
     details#howto code {
-      background: #252545;
+      background: #ede9fe;
       padding: 1px 6px;
       border-radius: 4px;
       font-family: monospace;
       font-size: 0.88em;
-      color: #fbbf24;
+      color: #7c3aed;
     }
-    details#howto a { color: #a78bfa; }
+    details#howto a { color: #7c3aed; }
 
     /* Filter bar */
     #filter-bar {
@@ -115,9 +114,9 @@
       min-width: 180px;
       padding: 8px 14px;
       border-radius: 8px;
-      border: 1.5px solid #3d3d7a;
-      background: #0f0f1a;
-      color: #e0e0ff;
+      border: 1.5px solid #c4b5fd;
+      background: #fff;
+      color: #2d1f6e;
       font-size: 0.88rem;
       outline: none;
     }
@@ -126,56 +125,58 @@
     .grade-btn {
       padding: 5px 14px;
       border-radius: 999px;
-      border: 1.5px solid #3d3d7a;
-      background: transparent;
-      color: #8888bb;
+      border: 1.5px solid #c4b5fd;
+      background: #fff;
+      color: #7c6fa0;
       cursor: pointer;
       font-size: 0.78rem;
       transition: all 0.15s;
       white-space: nowrap;
     }
-    .grade-btn:hover { border-color: #7c3aed; color: #c4b5fd; }
-    .grade-btn.active { background: #4f46e5; border-color: #4f46e5; color: #fff; }
+    .grade-btn:hover { border-color: #7c3aed; color: #6d28d9; }
+    .grade-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
 
-    #count { font-size: 0.78rem; color: #6b6b9a; white-space: nowrap; }
-    #updated { font-size: 0.75rem; color: #6b6b9a; white-space: nowrap; }
+    #count { font-size: 0.78rem; color: #7c6fa0; white-space: nowrap; }
+    #updated { font-size: 0.75rem; color: #7c6fa0; white-space: nowrap; }
 
     /* Table */
     .table-wrap {
       overflow-x: auto;
       border-radius: 12px;
-      border: 1px solid #2d2d5a;
+      border: 1px solid #ddd6fe;
+      box-shadow: 0 2px 12px #7c3aed18;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.86rem;
+      background: #fff;
     }
 
     thead th {
-      background: #1a1a2e;
+      background: #ede9fe;
       padding: 11px 14px;
       text-align: left;
       font-size: 0.72rem;
       letter-spacing: 0.08em;
-      color: #6b6b9a;
+      color: #7c6fa0;
       white-space: nowrap;
       cursor: pointer;
       user-select: none;
-      border-bottom: 1px solid #2d2d5a;
+      border-bottom: 1px solid #ddd6fe;
     }
-    thead th:hover { color: #a78bfa; }
-    thead th.asc::after  { content: ' ▲'; color: #a78bfa; }
-    thead th.desc::after { content: ' ▼'; color: #a78bfa; }
+    thead th:hover { color: #6d28d9; }
+    thead th.asc::after  { content: ' ▲'; color: #7c3aed; }
+    thead th.desc::after { content: ' ▼'; color: #7c3aed; }
 
-    tbody tr { border-bottom: 1px solid #1e1e3a; transition: background 0.15s; }
+    tbody tr { border-bottom: 1px solid #f0ebff; transition: background 0.15s; }
     tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: #18182e; }
+    tbody tr:hover { background: #faf7ff; }
 
     tbody td {
       padding: 10px 14px;
-      color: #c4b5fd;
+      color: #3b2d80;
       vertical-align: top;
       word-break: break-word;
     }
@@ -189,50 +190,102 @@
       font-weight: bold;
       white-space: nowrap;
     }
-    .g1 { background: #1e3a5f; color: #60a5fa; }
-    .g2 { background: #1a3a2a; color: #34d399; }
-    .g3 { background: #3a2a1a; color: #fb923c; }
-    .g4 { background: #2a1a3a; color: #c084fc; }
-    .g5 { background: #3a1a1a; color: #f87171; }
-    .g6 { background: #1a3a3a; color: #2dd4bf; }
+    .g1 { background: #dbeafe; color: #1d4ed8; }
+    .g2 { background: #d1fae5; color: #065f46; }
+    .g3 { background: #ffedd5; color: #c2410c; }
+    .g4 { background: #ede9fe; color: #6d28d9; }
+    .g5 { background: #fee2e2; color: #b91c1c; }
+    .g6 { background: #ccfbf1; color: #0f766e; }
 
     /* 様子セル */
     .note-cell {
-      max-width: 360px;
+      max-width: 400px;
       font-size: 0.84rem;
-      color: #b0b0d8;
-      line-height: 1.6;
+      color: #5b4fa0;
+      line-height: 1.7;
+      white-space: pre-wrap;
     }
 
-    /* 受付番号・日付セル */
-    .meta-cell { color: #6b6b9a; font-size: 0.75rem; white-space: nowrap; }
+    /* 日付セル */
+    .meta-cell { color: #9d8ec0; font-size: 0.75rem; white-space: nowrap; }
 
     /* 本タイトル */
-    .book-cell { color: #fbbf24; font-weight: 500; }
+    .book-cell { color: #d97706; font-weight: 500; }
 
     /* State */
     #message {
       text-align: center;
       padding: 60px 24px;
-      color: #6b6b9a;
+      color: #7c6fa0;
       font-size: 0.92rem;
       line-height: 1.9;
     }
     .spinner {
       display: inline-block;
       width: 18px; height: 18px;
-      border: 3px solid #2d2d5a;
-      border-top-color: #a78bfa;
+      border: 3px solid #ddd6fe;
+      border-top-color: #7c3aed;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       vertical-align: middle;
       margin-right: 8px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .err { color: #f87171; }
+    .err { color: #dc2626; }
 
-    a.back { font-size: 0.82rem; color: #6b6b9a; text-decoration: none; }
-    a.back:hover { color: #a78bfa; }
+    a.back { font-size: 0.82rem; color: #7c6fa0; text-decoration: none; }
+    a.back:hover { color: #6d28d9; }
+
+    /* Manual refresh bar */
+    #refresh-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      background: #fff;
+      border: 1px solid #ddd6fe;
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+    #refresh-btn {
+      padding: 8px 18px;
+      border-radius: 10px;
+      border: 1.5px solid #c4b5fd;
+      background: #fff;
+      color: #7c3aed;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    #refresh-btn:hover { background: #f3f0ff; }
+    #refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    #refresh-icon { font-size: 1rem; display: inline-block; }
+    #refresh-icon.spinning { animation: spin 0.8s linear infinite; }
+    #refresh-status { font-size: 0.78rem; color: #7c6fa0; white-space: nowrap; }
+
+    #fetch-btn {
+      padding: 8px 18px;
+      border-radius: 10px;
+      border: none;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    #fetch-btn:hover { background: #6d28d9; }
+    #fetch-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    #fetch-icon { font-size: 1rem; display: inline-block; }
+    #fetch-icon.spinning { animation: spin 0.8s linear infinite; }
   </style>
 </head>
 <body>
@@ -243,7 +296,6 @@
     <p>フォームズに送信されたログの一覧</p>
   </div>
   <div class="header-right">
-    <button class="btn" onclick="loadCSV()">更新</button>
     <a class="form-link" href="https://ws.formzu.net/dist/S950893888/" target="_blank">フォームに記録する</a>
     <a class="back" href="index.html">← トップ</a>
   </div>
@@ -263,6 +315,17 @@
     ※ メールで届いたログをコピーして手動で行を追加することもできます。
   </div>
 </details>
+
+<!-- Manual refresh bar -->
+<div id="refresh-bar">
+  <button id="fetch-btn" onclick="triggerFetch()">
+    <span id="fetch-icon">☁</span> フォームズから取得
+  </button>
+  <button id="refresh-btn" onclick="manualRefresh()">
+    <span id="refresh-icon">↻</span> ページを再読み込み
+  </button>
+  <span id="refresh-status"></span>
+</div>
 
 <!-- Filter bar -->
 <div id="filter-bar">
@@ -290,14 +353,13 @@
 <script>
 // --- フォームズの CSV ヘッダーに合わせた列インデックス ---
 const COL = {
-  id:    0,  // 受付番号
-  time:  1,  // 送信日時
-  name:  2,  // 読み手名
-  date:  3,  // 読み聞かせ日
-  grade: 4,  // 学年
-  book:  5,  // 本のタイトル
-  note:  6,  // 子どもたちの様子
-  memo:  7,  // その他 気づいた事やメモなど
+  time:  0,  // 日付
+  name:  1,  // 読み手名
+  date:  2,  // 読み聞かせ日
+  grade: 3,  // 学　年
+  book:  4,  // 本のタイトル
+  note:  5,  // 子どもたちの様子
+  memo:  6,  // その他　気づいた事やメモなど
 };
 
 const GRADE_CLASS = { '1年生':'g1','2年生':'g2','3年生':'g3','4年生':'g4','5年生':'g5','6年生':'g6' };
@@ -305,6 +367,7 @@ const GRADE_CLASS = { '1年生':'g1','2年生':'g2','3年生':'g3','4年生':'g4
 let allRows = [], headers = [];
 let sortCol = -1, sortAsc = true;
 let gradeFilter = 'all';
+let lastCSVText = '';
 
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/).filter(Boolean);
@@ -322,18 +385,23 @@ function parseCSV(text) {
   return { headers: parse(lines[0]), rows: lines.slice(1).map(parse) };
 }
 
-async function loadCSV() {
+async function loadCSV(silent = false) {
   const msg = document.getElementById('message');
-  msg.innerHTML = '<span class="spinner"></span>読み込み中…';
-  msg.style.display = 'block';
-  document.getElementById('tbl').style.display = 'none';
+  if (!silent) {
+    msg.innerHTML = '<span class="spinner"></span>読み込み中…';
+    msg.style.display = 'block';
+    document.getElementById('tbl').style.display = 'none';
+  }
 
   try {
     const res = await fetch('./logs.csv?t=' + Date.now());
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
+    if (silent && text === lastCSVText) return; // 変更なし
+    lastCSVText = text;
     const { headers: h, rows: r } = parseCSV(text);
     if (!h.length) throw new Error('CSV が空です');
+    const prevCount = allRows.length;
     headers = h;
     allRows = r;
     sortCol = -1;
@@ -341,12 +409,31 @@ async function loadCSV() {
     render();
     msg.style.display = 'none';
     document.getElementById('tbl').style.display = '';
+    if (silent && allRows.length > prevCount) showNewBanner(allRows.length - prevCount);
   } catch (e) {
-    msg.innerHTML =
-      `<span class="err">⚠ データを読み込めませんでした（${e.message}）</span><br><br>` +
-      `上の手順で <code>logs.csv</code> をリポジトリに追加してください。`;
+    if (!silent) {
+      msg.innerHTML =
+        `<span class="err">⚠ データを読み込めませんでした（${e.message}）</span><br><br>` +
+        `上の手順で <code>logs.csv</code> をリポジトリに追加してください。`;
+    }
   }
 }
+
+function showNewBanner(n) {
+  const b = document.createElement('div');
+  b.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#7c3aed;color:#fff;padding:10px 22px;border-radius:999px;font-size:0.88rem;box-shadow:0 4px 16px #7c3aed44;z-index:999;';
+  b.textContent = `✨ ${n}件の新しい記録が追加されました`;
+  document.body.appendChild(b);
+  setTimeout(() => b.remove(), 4000);
+}
+
+// 5分ごとに自動チェック
+setInterval(() => loadCSV(true), 5 * 60 * 1000);
+
+// タブが再表示されたときも更新
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') loadCSV(true);
+});
 
 function setGrade(g) {
   gradeFilter = g;
@@ -370,7 +457,6 @@ function render() {
       return sortAsc ? av.localeCompare(bv, 'ja') : bv.localeCompare(av, 'ja');
     });
   } else {
-    // デフォルトは新着順（受付番号 降順）
     rows = [...rows].reverse();
   }
 
@@ -404,10 +490,10 @@ function render() {
       } else if (i === COL.book) {
         td.className = 'book-cell';
         td.textContent = val;
-      } else if (i === COL.note) {
+      } else if (i === COL.note || i === COL.memo) {
         td.className = 'note-cell';
-        td.textContent = val;
-      } else if (i === COL.id || i === COL.time) {
+        td.innerHTML = val.replace(/\[br\]/gi, '<br>');
+      } else if (i === COL.time) {
         td.className = 'meta-cell';
         td.textContent = val;
       } else {
@@ -418,6 +504,71 @@ function render() {
     });
     tbody.appendChild(tr2);
   });
+}
+
+async function triggerFetch() {
+  const btn = document.getElementById('fetch-btn');
+  const icon = document.getElementById('fetch-icon');
+  const status = document.getElementById('refresh-status');
+  btn.disabled = true;
+  document.getElementById('refresh-btn').disabled = true;
+  icon.classList.add('spinning');
+  status.textContent = 'フォームズに接続中…';
+
+  try {
+    const res = await fetch('https://formzu-trigger.nami761.workers.dev', { method: 'POST' });
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'ワークフロー起動失敗');
+  } catch (e) {
+    icon.classList.remove('spinning');
+    btn.disabled = false;
+    document.getElementById('refresh-btn').disabled = false;
+    status.textContent = '⚠ 失敗しました: ' + e.message;
+    return;
+  }
+
+  // Poll for CSV changes up to 90 seconds
+  status.textContent = 'データ取得中… (最大90秒)';
+  const prevText = lastCSVText;
+  const deadline = Date.now() + 90000;
+  let updated = false;
+  while (Date.now() < deadline) {
+    await new Promise(r => setTimeout(r, 5000));
+    try {
+      const r2 = await fetch('./logs.csv?t=' + Date.now());
+      const txt = await r2.text();
+      if (txt !== prevText) { updated = true; lastCSVText = txt; break; }
+    } catch (_) {}
+  }
+
+  icon.classList.remove('spinning');
+  btn.disabled = false;
+  document.getElementById('refresh-btn').disabled = false;
+
+  if (updated) {
+    await loadCSV(true);
+    status.textContent = '✨ データを更新しました！ (' + new Date().toLocaleTimeString('ja-JP') + ')';
+  } else {
+    status.textContent = '変更はありませんでした (' + new Date().toLocaleTimeString('ja-JP') + ')';
+  }
+}
+
+async function manualRefresh() {
+  const btn = document.getElementById('refresh-btn');
+  const icon = document.getElementById('refresh-icon');
+  const status = document.getElementById('refresh-status');
+  btn.disabled = true;
+  icon.classList.add('spinning');
+  status.textContent = '確認中…';
+  const prev = allRows.length;
+  await loadCSV();
+  icon.classList.remove('spinning');
+  btn.disabled = false;
+  if (allRows.length > prev) {
+    status.textContent = `✨ ${allRows.length - prev}件の新しい記録が見つかりました！`;
+  } else {
+    status.textContent = '最新の状態です（' + new Date().toLocaleTimeString('ja-JP') + '）';
+  }
 }
 
 loadCSV();
