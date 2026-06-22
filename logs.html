@@ -241,27 +241,53 @@
       align-items: center;
       gap: 12px;
       margin-bottom: 16px;
+      flex-wrap: wrap;
+      background: #fff;
+      border: 1px solid #ddd6fe;
+      border-radius: 12px;
+      padding: 12px 16px;
     }
-    #refresh-btn {
-      padding: 10px 24px;
+    #refresh-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+    a.action-btn {
+      padding: 9px 20px;
       border-radius: 10px;
       border: none;
       background: #7c3aed;
       color: #fff;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: bold;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    a.action-btn:hover { background: #6d28d9; }
+    #refresh-hint { font-size: 0.78rem; color: #9d8ec0; }
+    #refresh-btn {
+      padding: 8px 18px;
+      border-radius: 10px;
+      border: 1.5px solid #c4b5fd;
+      background: #fff;
+      color: #7c3aed;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background 0.2s;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      white-space: nowrap;
     }
-    #refresh-btn:hover { background: #6d28d9; }
-    #refresh-btn:active { transform: scale(0.97); }
-    #refresh-btn:disabled { background: #c4b5fd; cursor: not-allowed; }
-    #refresh-icon { font-size: 1.1rem; display: inline-block; }
+    #refresh-btn:hover { background: #f3f0ff; }
+    #refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    #refresh-icon { font-size: 1rem; display: inline-block; }
     #refresh-icon.spinning { animation: spin 0.8s linear infinite; }
-    #refresh-status { font-size: 0.82rem; color: #7c6fa0; }
+    #refresh-status { font-size: 0.78rem; color: #7c6fa0; white-space: nowrap; }
   </style>
 </head>
 <body>
@@ -294,8 +320,14 @@
 
 <!-- Manual refresh bar -->
 <div id="refresh-bar">
+  <div id="refresh-left">
+    <a class="action-btn" href="https://github.com/nami761/word-scramble/actions/workflows/update-logs.yml" target="_blank">
+      ⬇ フォームズから取得
+    </a>
+    <span id="refresh-hint">← フォームに新しい記録を送信した後にクリック</span>
+  </div>
   <button id="refresh-btn" onclick="manualRefresh()">
-    <span id="refresh-icon">↻</span> 最新データに更新
+    <span id="refresh-icon">↻</span> ページを再読み込み
   </button>
   <span id="refresh-status"></span>
 </div>
