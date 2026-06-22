@@ -194,6 +194,7 @@
     .g3 { background: #3a2a1a; color: #fb923c; }
     .g4 { background: #2a1a3a; color: #c084fc; }
     .g5 { background: #3a1a1a; color: #f87171; }
+    .g6 { background: #1a3a3a; color: #2dd4bf; }
 
     /* 様子セル */
     .note-cell {
@@ -272,6 +273,7 @@
   <button class="grade-btn" data-grade="3年生" onclick="setGrade('3年生')">3年生</button>
   <button class="grade-btn" data-grade="4年生" onclick="setGrade('4年生')">4年生</button>
   <button class="grade-btn" data-grade="5年生" onclick="setGrade('5年生')">5年生</button>
+  <button class="grade-btn" data-grade="6年生" onclick="setGrade('6年生')">6年生</button>
   <span id="count"></span>
   <span id="updated"></span>
 </div>
@@ -295,9 +297,10 @@ const COL = {
   grade: 4,  // 学年
   book:  5,  // 本のタイトル
   note:  6,  // 子どもたちの様子
+  memo:  7,  // その他 気づいた事やメモなど
 };
 
-const GRADE_CLASS = { '1年生':'g1','2年生':'g2','3年生':'g3','4年生':'g4','5年生':'g5' };
+const GRADE_CLASS = { '1年生':'g1','2年生':'g2','3年生':'g3','4年生':'g4','5年生':'g5','6年生':'g6' };
 
 let allRows = [], headers = [];
 let sortCol = -1, sortAsc = true;
