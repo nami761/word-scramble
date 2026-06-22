@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>フォームログ 一覧</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1a;
+      color: #e0e0ff;
+      min-height: 100vh;
+      padding: 32px 24px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.15em;
+      color: #a78bfa;
+      text-shadow: 0 0 18px #7c3aed88;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    #status {
+      font-size: 0.8rem;
+      color: #6b6b9a;
+    }
+    #status.ok  { color: #34d399; }
+    #status.err { color: #f87171; }
+
+    .btn {
+      padding: 7px 18px;
+      border-radius: 8px;
+      border: 1px solid #4f46e5;
+      background: transparent;
+      color: #a78bfa;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #2d2d5a; }
+
+    /* Config panel */
+    #config-panel {
+      background: #1a1a2e;
+      border: 1px solid #2d2d5a;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+    #config-panel.open { display: flex; }
+
+    .field label {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: #6b6b9a;
+      margin-bottom: 4px;
+    }
+    .field input {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1.5px solid #3d3d7a;
+      background: #0f0f1a;
+      color: #e0e0ff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .field input:focus { border-color: #7c3aed; }
+
+    .hint-text {
+      font-size: 0.75rem;
+      color: #6b6b9a;
+      line-height: 1.6;
+    }
+    .hint-text a { color: #a78bfa; text-decoration: none; }
+
+    /* Filter row */
+    #filter-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    #search {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #3d3d7a;
+      background: #0f0f1a;
+      color: #e0e0ff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    #search:focus { border-color: #7c3aed; }
+    #count { font-size: 0.8rem; color: #6b6b9a; white-space: nowrap; }
+
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid #2d2d5a;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    thead th {
+      background: #1a1a2e;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: #6b6b9a;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid #2d2d5a;
+      position: sticky;
+      top: 0;
+    }
+    thead th:hover { color: #a78bfa; }
+    thead th .sort-icon { margin-left: 4px; opacity: 0.5; }
+    thead th.asc .sort-icon::after  { content: ' ▲'; opacity: 1; color: #a78bfa; }
+    thead th.desc .sort-icon::after { content: ' ▼'; opacity: 1; color: #a78bfa; }
+
+    tbody tr { border-bottom: 1px solid #1e1e3a; transition: background 0.15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #1a1a2e; }
+
+    tbody td {
+      padding: 11px 16px;
+      color: #c4b5fd;
+      vertical-align: top;
+      word-break: break-word;
+      max-width: 320px;
+    }
+    tbody td:first-child { color: #6b6b9a; font-size: 0.78rem; white-space: nowrap; }
+
+    /* States */
+    #empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: #6b6b9a;
+      font-size: 0.95rem;
+      display: none;
+    }
+    #loading {
+      text-align: center;
+      padding: 60px 24px;
+      color: #6b6b9a;
+      font-size: 0.95rem;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px; height: 20px;
+      border: 3px solid #2d2d5a;
+      border-top-color: #a78bfa;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #auto-label {
+      font-size: 0.78rem;
+      color: #6b6b9a;
+    }
+    #auto-label span { color: #a78bfa; }
+
+    a.back { font-size: 0.85rem; color: #6b6b9a; text-decoration: none; }
+    a.back:hover { color: #a78bfa; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>FORMS LOG</h1>
+  <div class="controls">
+    <span id="auto-label">自動更新: <span id="countdown">30</span>s</span>
+    <button class="btn" onclick="fetchData()">今すぐ更新</button>
+    <button class="btn" onclick="toggleConfig()">設定</button>
+    <a class="back" href="index.html">← ゲームに戻る</a>
+  </div>
+</header>
+
+<!-- Config panel -->
+<div id="config-panel">
+  <div class="field">
+    <label>スプレッドシート CSV URL</label>
+    <input id="csv-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv&gid=0">
+  </div>
+  <div class="hint-text">
+    <strong>設定方法:</strong><br>
+    1. Google Forms の回答を Google スプレッドシートに連携<br>
+    2. スプレッドシートを「ファイル → 共有 → ウェブに公開」→ CSV 形式で公開<br>
+    3. 公開 URL をこちらに貼り付けて保存<br>
+    ※ Microsoft Forms の場合は Excel をダウンロード → Google スプレッドシートにインポートして同様の手順で公開できます
+  </div>
+  <div style="display:flex;gap:10px;">
+    <button class="btn" onclick="saveConfig()">保存して読み込む</button>
+    <button class="btn" onclick="loadDemo()">デモデータで試す</button>
+  </div>
+  <div id="status"></div>
+</div>
+
+<!-- Filter row -->
+<div id="filter-row">
+  <input id="search" type="text" placeholder="キーワードで絞り込み…" oninput="renderTable()">
+  <span id="count"></span>
+</div>
+
+<!-- Table -->
+<div class="table-wrap">
+  <div id="loading"><span class="spinner"></span>データを読み込み中…</div>
+  <div id="empty-state">表示するデータがありません。<br>設定から CSV URL を指定するか、デモデータをお試しください。</div>
+  <table id="log-table" style="display:none">
+    <thead id="thead"><tr></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<script>
+const STORAGE_KEY = 'forms_log_csv_url';
+const REFRESH_SEC = 30;
+
+let allRows = [];
+let headers = [];
+let sortCol = 0;
+let sortAsc = false;
+let countdown = REFRESH_SEC;
+let countdownTimer = null;
+
+// Demo data (CSV format)
+const DEMO_CSV = `タイムスタンプ,名前,スコア,感想,言語
+2026-06-22 09:01,田中 一郎,320,とても楽しかった！,日本語
+2026-06-22 09:15,Sato Hanako,480,Fun and challenging!,English
+2026-06-22 10:02,山田 太郎,150,難しかったです,日本語
+2026-06-22 10:30,Yamamoto K.,560,Great game, loved the timer!,English
+2026-06-22 11:11,佐藤 花子,400,もっと単語を増やしてほしい,日本語
+2026-06-22 12:00,Tanaka J.,200,需要更多日语单词,日本語
+2026-06-22 13:22,鈴木 次郎,610,全問正解できた！,日本語
+2026-06-22 14:05,Kim Minjun,390,Would play again!,English
+2026-06-22 15:30,伊藤 恵美,270,タイマーが短い気がします,日本語
+2026-06-22 16:44,Chen Wei,520,Very fun word game,English`;
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n').map(l => l.trim()).filter(Boolean);
+  if (lines.length < 2) return { headers: [], rows: [] };
+  const parse = line => {
+    const result = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+      else { cur += c; }
+    }
+    result.push(cur);
+    return result.map(s => s.trim());
+  };
+  return {
+    headers: parse(lines[0]),
+    rows: lines.slice(1).map(parse)
+  };
+}
+
+function getSavedUrl() {
+  return localStorage.getItem(STORAGE_KEY) || '';
+}
+
+function loadDemo() {
+  const { headers: h, rows: r } = parseCSV(DEMO_CSV);
+  headers = h;
+  allRows = r;
+  sortCol = 0; sortAsc = false;
+  renderTable();
+  setStatus('デモデータを表示しています', 'ok');
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('log-table').style.display = '';
+  document.getElementById('empty-state').style.display = 'none';
+}
+
+async function fetchData() {
+  const url = getSavedUrl();
+  if (!url) {
+    loadDemo();
+    return;
+  }
+
+  setStatus('読み込み中…', '');
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('log-table').style.display = 'none';
+  document.getElementById('empty-state').style.display = 'none';
+
+  try {
+    // Use CORS proxy for Google Sheets
+    const proxyUrl = url.includes('docs.google.com')
+      ? `https://corsproxy.io/?${encodeURIComponent(url)}`
+      : url;
+    const res = await fetch(proxyUrl);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    const { headers: h, rows: r } = parseCSV(text);
+    if (!h.length) throw new Error('データが空です');
+    headers = h;
+    allRows = r;
+    sortCol = 0; sortAsc = false;
+    renderTable();
+    setStatus(`${r.length} 件 取得完了 (${now()})`, 'ok');
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('log-table').style.display = '';
+  } catch (e) {
+    setStatus(`エラー: ${e.message}`, 'err');
+    document.getElementById('loading').style.display = 'none';
+    if (!allRows.length) document.getElementById('empty-state').style.display = 'block';
+    else document.getElementById('log-table').style.display = '';
+  }
+}
+
+function renderTable() {
+  const q = document.getElementById('search').value.toLowerCase();
+
+  let rows = allRows.filter(r =>
+    !q || r.some(c => c.toLowerCase().includes(q))
+  );
+
+  // Sort
+  rows.sort((a, b) => {
+    const av = a[sortCol] || '', bv = b[sortCol] || '';
+    return sortAsc ? av.localeCompare(bv, 'ja') : bv.localeCompare(av, 'ja');
+  });
+
+  document.getElementById('count').textContent = `${rows.length} / ${allRows.length} 件`;
+
+  // Render headers
+  const tr = document.querySelector('#thead tr');
+  tr.innerHTML = '';
+  headers.forEach((h, i) => {
+    const th = document.createElement('th');
+    th.innerHTML = `${h}<span class="sort-icon"></span>`;
+    if (i === sortCol) th.classList.add(sortAsc ? 'asc' : 'desc');
+    th.onclick = () => {
+      if (sortCol === i) sortAsc = !sortAsc;
+      else { sortCol = i; sortAsc = true; }
+      renderTable();
+    };
+    tr.appendChild(th);
+  });
+
+  // Render rows
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  rows.forEach(row => {
+    const tr2 = document.createElement('tr');
+    headers.forEach((_, i) => {
+      const td = document.createElement('td');
+      td.textContent = row[i] || '';
+      tr2.appendChild(td);
+    });
+    tbody.appendChild(tr2);
+  });
+}
+
+function setStatus(msg, cls) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = cls;
+}
+
+function toggleConfig() {
+  const p = document.getElementById('config-panel');
+  const open = p.classList.toggle('open');
+  if (open) {
+    document.getElementById('csv-url').value = getSavedUrl();
+  }
+}
+
+function saveConfig() {
+  const url = document.getElementById('csv-url').value.trim();
+  if (!url) { setStatus('URL を入力してください', 'err'); return; }
+  localStorage.setItem(STORAGE_KEY, url);
+  fetchData();
+  document.getElementById('config-panel').classList.remove('open');
+}
+
+function now() {
+  return new Date().toLocaleTimeString('ja-JP');
+}
+
+// Auto-refresh countdown
+function startCountdown() {
+  clearInterval(countdownTimer);
+  countdown = REFRESH_SEC;
+  countdownTimer = setInterval(() => {
+    countdown--;
+    document.getElementById('countdown').textContent = countdown;
+    if (countdown <= 0) {
+      countdown = REFRESH_SEC;
+      fetchData();
+    }
+  }, 1000);
+}
+
+// Init
+document.getElementById('loading').style.display = 'none';
+document.getElementById('empty-state').style.display = 'block';
+
+const savedUrl = getSavedUrl();
+if (savedUrl) {
+  fetchData();
+} else {
+  // Show demo by default
+  loadDemo();
+}
+startCountdown();
+</script>
+</body>
+</html>
