@@ -1,0 +1,42 @@
+name: フォームログ自動更新
+
+on:
+  schedule:
+    # UTC 0,6,12,18時 = JST 9,15,21,3時 に実行（1日4回）
+    - cron: '0 0,6,12,18 * * *'
+  workflow_dispatch:  # GitHub画面から手動実行も可能
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: ライブラリをインストール
+        run: pip install requests beautifulsoup4
+
+      - name: フォームズから CSV を取得
+        env:
+          FORMZU_ID: ${{ secrets.FORMZU_ID }}
+          FORMZU_PASSWORD: ${{ secrets.FORMZU_PASSWORD }}
+          FORMZU_CSV_URL: ${{ secrets.FORMZU_CSV_URL }}
+        run: python scripts/fetch_formzu.py
+
+      - name: 変更があればコミット＆プッシュ
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add logs.csv
+          if git diff --staged --quiet; then
+            echo "変更なし（新しい送信データはありません）"
+          else
+            git commit -m "📊 フォームログ更新 $(TZ='Asia/Tokyo' date '+%Y-%m-%d %H:%M JST')"
+            git push
+          fi
