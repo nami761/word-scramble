@@ -1,0 +1,49 @@
+name: Update Form Logs
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'logs.csv'
+      - 'scripts/fetch_formzu.py'
+      - '.github/workflows/update-logs.yml'
+  schedule:
+    - cron: '0 0,6,12,18 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Fetch CSV from formzu
+        env:
+          FORMZU_ID: ${{ secrets.FORMZU_ID }}
+          FORMZU_PASSWORD: ${{ secrets.FORMZU_PASSWORD }}
+          FORMZU_CSV_URL: ${{ secrets.FORMZU_CSV_URL }}
+        run: python scripts/fetch_formzu.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add logs.csv
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Update form logs $(date '+%Y-%m-%d %H:%M UTC')"
+            git pull --rebase origin master
+            git push
+          fi

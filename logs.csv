@@ -1,1 +1,1286 @@
+<<<<<<< HEAD
 受付番号,送信日時,読み手名,読み聞かせ日,学年,本のタイトル,子どもたちの様子,その他 気づいた事やメモなど
+=======
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="robots" content="noindex">
+<title>フォームズ－フォーム作成</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css?d=20180124">
+<link rel="stylesheet" type="text/css" href="/css/assemble-form.min.css?d=20230203">
+<link rel="shortcut icon" href="/image/favicon.ico">
+<!-- <script defer src="https://use.fontawesome.com/releases/v5.2.0/js/all.js" integrity="sha384-4oV5EgaV02iISL2ban6c/RmotsABqE4yZxZLcYMAdG7FAPsyHYAPpywE9PJo+Khy" crossorigin="anonymous"></script> -->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+<style type="text/css">
+#navigation-wrap {
+}
+
+#dummy-form {
+display: none;
+z-index: 10;
+position: absolute;
+border: 1px solid #999;
+padding: 8px 24px 8px 24px;
+width: 780px;
+box-shadow: 0px 3px 5px #aaa;
+box-sizing: border-box;
+margin: 0 0 30px 0;
+}
+
+#dummy-form .dummy-form-header {
+margin: 0px 0px 16px 0px;
+padding: 0px;
+text-align: right;
+width :100%;
+}
+
+#dummy-form .dummy-form-footer {
+text-align: center;
+margin-top: 16px;
+}
+
+
+#dummy-form {
+background-color: #FFFFFF;
+}
+
+.comform-wrap {
+box-sizing: border-box;
+position: relative;
+margin: 8px auto 8px auto;
+overflow: auto;
+margin-top: 8px;
+max-width: 700px;
+border: 1px solid #FFFFFF;
+background-color: #FFFFFF;
+padding: 4px 4px 0px 4px;
+}
+
+.comform-title {
+text-align: center;
+max-width: auto;
+font-size: 18px;
+line-height: 1.6em;
+color: #FFFFFF;
+background-color: #ABABAB;
+border: 1px solid #AAAAAA;
+font-weight: bold;
+padding: 6px 6px 6px 6px;
+margin: 8px auto 16px auto;
+}
+
+
+.comform-container {
+box-sizing: border-box;
+border-top: 1px solid #CCCCCC;
+border-left: 1px solid #CCCCCC;
+}
+
+
+
+.comform-row {
+table-layout: fixed;
+display: table;
+width: 100%;
+}
+
+.comform-row .itemTitle {
+display: table-cell;
+width: 30%;
+vertical-align: top;
+padding: 10px 10px 10px 10px;
+line-height: 1.6;
+font-size: 16px;
+color: #555555;
+background-color: #EEEEEE;
+border: 0;
+border-right: 1px solid #CCCCCC;
+border-bottom: 1px solid #CCCCCC;
+box-sizing: border-box;
+}
+
+.comform-row .itemInput {
+display: table-cell;
+width: 70%;
+vertical-align: text-top;
+font-size: 16px;
+line-height: 1.6;
+color: #555555;
+background-color: #FFFFFF;
+padding: 10px 10px 10px 10px;
+border: 0;
+border-right: 1px solid #CCCCCC;
+border-bottom: 1px solid #CCCCCC;
+box-sizing: border-box;
+}
+
+
+.itemInput.itemComment {
+overflow-wrap: break-word;
+}
+
+.itemInput input[type="text"], .itemInput input[type="email"], .itemInput input[type="password"], .itemInput textarea, .itemInput select {
+font-size: 0.95em;
+font-family: -apple-system, BlinkMacSystemFont, monospace;
+line-height: 1.6;
+padding: 4px 8px 4px 8px;
+margin: 2px 0px;
+color: #555;
+background-color: #fff;
+border: 1px solid #BBBBBB;
+border-radius: 0px;
+}
+
+.itemInput select {
+padding-left: 0px;
+padding-right: 0px;
+max-width: 100%;
+}
+
+.itemInput input[type="radio"], .itemInput input[type="checkbox"] {
+vertical-align: middle;
+height: 16px;
+width:  16px;
+margin: 0 0.1em 0 0;
+position: relative;
+top: -0.1em;
+}
+
+.itemInput select option {
+color: #444;
+background-color: #fff;
+}
+
+.itemInput figure {
+margin: 0;
+}
+
+
+
+
+.itemInput input[type="text"]:focus, .itemInput input[type="email"]:focus, .itemInput textarea:focus, .itemInput select:focus {
+box-shadow: 0px 0px 3px #f05050;
+}
+.itemInput label:hover {
+text-shadow: 0px 0px 2px #dd8080;
+}
+
+.comform-row figure img[onclick]:hover {
+cursor: pointer;
+}
+
+
+
+
+.annot {
+color: #DC143C;
+font-size: 0.9em;
+padding: 0px;
+display: inline-block;
+vertical-align: top;
+overflow-wrap: break-word;
+width: 100%;
+}
+
+.annot-upper {
+margin: 0px 0px 1px 0px;
+}
+
+.annot-lower {
+margin: 1px 0px 0px 0px;
+}
+
+
+.req-mark {
+display: inline-block;
+font-size: 0.8em;
+height: 1.4em;
+color: #EA3049;
+background-color: ;
+font-family: meiryo, 'Hiragino Kaku Gothic Pro', sans-serif;
+white-space: nowrap;
+border-radius: 4px;
+position: relative;
+padding: 0.1em 0.2em;
+margin: 0 0 0 0.2em;
+}
+
+.checkLabel {
+margin: 0px 4px;
+font-size: 0.9em;
+display: inline-block;
+}
+
+.tkaddress {
+display: inline-table;
+}
+
+.tkaddress th {
+background : 0;
+border: 0;
+padding: 0px 2px 0px 0px;
+text-align: left;
+}
+
+.tkaddress td {
+background : 0;
+border: 0;
+padding: 0px;
+}
+
+.tkaddress .search-address-button {
+padding: 1px 1px 1px 1px;
+font-size: 0.8em;
+}
+
+
+.choice-table {
+display: inline-table;
+border-spacing: 0;
+vertical-align: top;
+}
+
+.choice-table td {
+padding: 2px 4px 2px 18px;
+text-indent: -16px;
+}
+
+.choice-table td label {
+margin: 0px 0px 0px 2px;
+}
+
+
+
+.grid-item {
+display: inline-table;
+border-spacing: 0;
+vertical-align: top;
+}
+
+.grid-item-row {
+display: table-row;
+}
+
+.grid-item-colname {
+display: table-cell;
+padding: 4px;
+text-align: center;
+}
+
+.grid-item-rowname {
+display: table-cell;
+padding: 4px 0;
+}
+
+.grid-item-radio {
+display: table-cell;
+padding: 4px;
+text-align: center;
+border-radius: 4px;
+}
+
+.grid-item-radio:hover {
+background-color: rgba(255, 230, 230, 0.7);
+}
+
+
+
+.scale-table {
+}
+
+.scale-table td {
+text-align: center;
+padding: 0px 4px 0px 4px;
+}
+
+.blockConnect {
+display: inline-block;
+margin: 0px;
+vertical-align: top;
+}
+
+.comform-title, .itemTitle, .itemInput, .itemInput select, .annot, #form-button button, .proc-step {
+font-family: "Yu Gothic Medium", meiryo, "MS PGothic", YuGothic, "MS PGothic", "Hiragino Kaku Gothic Pro", sans-serif;
+}
+
+
+
+
+
+.form-buttons {
+text-align: center;
+margin: 16px 0px;
+padding: 0;
+}
+
+.form-buttons button {
+font-size: 14px;
+}
+
+.form-buttons .return-top {
+margin: 0 32px 0 0;
+}
+
+
+
+.form-buttons .deco-button-wide {
+min-width: 400px;
+padding: 10px 12px;
+margin: 0;
+color: #FFFFFF;
+background-color: #ABABAB;
+border: 1px solid #AAAAAA;
+letter-spacing: 2px;
+font-size: 16px;
+font-weight: 400;
+line-height: 1.4em;
+border-radius: 6px;
+box-shadow: 0 1px 4px #ccc;
+cursor: pointer;
+}
+
+.form-buttons .deco-button-wide:hover {
+background-color: #898989;
+}
+
+.form-buttons .deco-button-wide:active {
+position: relative;
+top: 2px;
+}
+
+
+
+
+#save-load-layer {
+position: fixed;
+top: -1px;
+left: 50%;
+margin-left: 165px;
+width: 180px;
+box-sizing: border-box;
+border: 1px solid #CCCCCC;
+border-radius: 0px 0px 6px 6px;
+box-shadow: 0px 1px 3px #999;
+background-color: #EEEEEE;
+padding: 2px;
+font-size: 12px;
+color: #555555;
+z-index: 10;
+}
+
+#save-load-layer #save-load-title {
+text-align: center;
+background: 5px 0px url(/image/save-icon16.png) no-repeat;
+text-decoration: underline;
+}
+
+#save-load-layer #save-load-title:hover {
+cursor: pointer;
+}
+
+#save-load-layer #save-load-message {
+text-align: center;
+color: crimson;
+background-color: #fff;
+border-radius: 2px;
+text-shadow: 1px 1px 1px #ddd;
+}
+
+#save-load-buttons {
+margin: 2px 0px 2px 0px;
+padding: 2px;
+color: #444;
+}
+
+#save-load-buttons li {
+margin: 0px 0px 8px 0px;
+}
+
+#save-load-buttons button {
+width: 100%;
+line-height: 2.0em;
+padding: 2px 4px;
+margin: 0px 4px 2px 0px;
+color: #FFFFFF;
+background-color: #ABABAB;
+border: 1px solid #ddd;
+border-radius: 4px;
+}
+#save-load-buttons button:hover {
+text-decoration: underline;
+background-color: #898989}
+
+
+
+
+
+@media print {
+    #save-load-layer {
+    display: none;
+    }
+}
+
+
+#save-load-layer {
+position: absolute;
+top: -12px;
+}
+
+
+.item-sample {
+    background-image: url();
+    background-size:  cover;
+    background-position : center center;
+}
+
+</style>
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.4.0.min.js" integrity="sha256-mBCu5+bVfYzOqpYyK4jm30ZxAZRomuErKEFJFIyrwvM=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+if (!window.jQuery) {
+    document.write('<script type="text/javascript" src="/js/jquery-2.2.4.min.js"><\/script>');
+}
+</script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/redmond/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+<script type="text/javascript">
+if (!window.jQuery.ui) {
+    document.write('<script type="text/javascript" src="/jquery-ui-1.11.4.custom/jquery-ui.min.js"><\/script>');
+    document.write('<link rel="stylesheet" href="/jquery-ui-1.11.4.custom/jquery-ui.min.css" />');
+}
+</script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/izimodal/1.5.1/css/iziModal.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/izimodal/1.5.1/js/iziModal.min.js"></script>
+<script type="text/javascript">
+if (!window.$iziModal) {
+    document.write('<script type="text/javascript" src="/izimodal/iziModal.min.js""><\/script>');
+    document.write('<link rel="stylesheet" href="/izimodal/iziModal.min.css" />');
+}
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ja.js"></script>
+<script src="/js/form-item-date-calendar.min.js?d=20250814"></script>
+<script type="text/javascript">
+var items = [{"id":"comm001","title":"読み聞かせお疲れ様でした。\nここに、読み聞かせの記録をご記入下さい♪\n","type":"comment","html":"<div class=\"comform-container\"><div class=\"comform-row\"><div class=\"itemInput itemComment\">読み聞かせお疲れ様でした。<br \/>\nここに、読み聞かせの記録をご記入下さい♪<br \/>\n<\/div><\/div><\/div>"},{"id":"tkna001","title":"読み手名\n","type":"tkname","req":"1","size":"20","html":"<div class=\"comform-container\"><div class=\"comform-row\"><div class=\"itemTitle\">読み手名<br \/>\n<span class=\"req-mark\">必須<\/span><\/div><div class=\"itemInput\"><input type=\"text\" name=\"tkna001\" id=\"tkna001\" size=\"20\" value=\"\" style=\"width: 100%; max-width:10em;\" class=\"required\" \/><\/div><\/div><\/div>"},{"id":"date206","title":"読み聞かせ日","type":"datetime","yearType":"century","yearLabel":"年","monthOn":"1","monthLabel":"月","dayOn":"1","dayLabel":"日","minuteType":"10","calendarOn":"1","ymdOrder":"ymd","limitDateBegin":"0","limitDateEnd":"0","req":"1","html":"<div class=\"comform-container\"><div class=\"comform-row\"><div class=\"itemTitle\">読み聞かせ日<span class=\"req-mark\">必須<\/span><\/div><div class=\"itemInput\"><select name=\"date206-month\" id=\"date206-month\" class=\"required\" ><option value=\"\"><\/option><option value=\"01\">01<\/option><option value=\"02\">02<\/option><option value=\"03\">03<\/option><option value=\"04\">04<\/option><option value=\"05\">05<\/option><option value=\"06\">06<\/option><option value=\"07\">07<\/option><option value=\"08\">08<\/option><option value=\"09\">09<\/option><option value=\"10\">10<\/option><option value=\"11\">11<\/option><option value=\"12\">12<\/option><\/select>&nbsp;月&nbsp;<select name=\"date206-day\" id=\"date206-day\" class=\"required\" ><option value=\"\"><\/option><option value=\"01\">01<\/option><option value=\"02\">02<\/option><option value=\"03\">03<\/option><option value=\"04\">04<\/option><option value=\"05\">05<\/option><option value=\"06\">06<\/option><option value=\"07\">07<\/option><option value=\"08\">08<\/option><option value=\"09\">09<\/option><option value=\"10\">10<\/option><option value=\"11\">11<\/option><option value=\"12\">12<\/option><option value=\"13\">13<\/option><option value=\"14\">14<\/option><option value=\"15\">15<\/option><option value=\"16\">16<\/option><option value=\"17\">17<\/option><option value=\"18\">18<\/option><option value=\"19\">19<\/option><option value=\"20\">20<\/option><option value=\"21\">21<\/option><option value=\"22\">22<\/option><option value=\"23\">23<\/option><option value=\"24\">24<\/option><option value=\"25\">25<\/option><option value=\"26\">26<\/option><option value=\"27\">27<\/option><option value=\"28\">28<\/option><option value=\"29\">29<\/option><option value=\"30\">30<\/option><option value=\"31\">31<\/option><\/select>&nbsp;日&nbsp;<span class=\"item-date-calendar\" data-target-item-id=\"date206\" ><img src=\"\/image\/icon-calendar-32.png\" style=\"height: 26px; vertical-align: middle; position: relative; top: -2px;\"><\/span><\/div><\/div><\/div>"},{"id":"choi909","title":"学　年","type":"choice","choiceType":"select","options":"[{\"name\":\"1年生\"},{\"name\":\"2年生\"},{\"name\":\"3年生\"},{\"name\":\"4年生\"},{\"name\":\"5年生\"},{\"name\":\"6年生\"}]","rowOptionNum":"1","req":"1","html":"<div class=\"comform-container\"><div class=\"comform-row\"><div class=\"itemTitle\">学　年<span class=\"req-mark\">必須<\/span><\/div><div class=\"itemInput\"><select name=\"choi909\" id=\"choi909\" class=\"itemChoice required\" ><option value=\"\"><\/option><option value=\"1年生\" >1年生<\/option><option value=\"2年生\" >2年生<\/option><option value=\"3年生\" >3年生<\/option><option value=\"4年生\" >4年生<\/option><option value=\"5年生\" >5年生<\/option><option value=\"6年生\" >6年生<\/option><\/select><\/div><\/div><\/div>"},{"id":"text628","title":"本のタイトル","type":"text","size":"30","rows":"1","req":"1","html":"<div class=\"comform-container\"><div class=\"comform-row\"><div class=\"itemTitle\">本のタイトル<span class=\"req-mark\">必須<\/span><\/div><div class=\"itemInput\"><input type=\"text\" name=\"text628\" id=\"text628\" size=\"30\" value=\"\" style=\"width: 100%; max-width: 15em\" class=\"required\" \/><\/div><\/div><\/div>"},{"id":"text001","title":"子どもたちの様子","type":"text","size":"50","rows":"5","html":"<div class=\"comform-container\"><div class=\"comform-row\"><div class=\"itemTitle\">子どもたちの様子<\/div><div class=\"itemInput\"><textarea name=\"text001\" id=\"text001\" rows=\"5\" cols=\"50\" style=\"width: 100%; max-width: 25em; height: 8em; vertical-align: middle;\" ><\/textarea><\/div><\/div><\/div>"},{"id":"text252","title":"その他　気づいた事やメモなど","type":"text","size":"50","rows":"5","html":"<div class=\"comform-container\"><div class=\"comform-row\"><div class=\"itemTitle\">その他　気づいた事やメモなど<\/div><div class=\"itemInput\"><textarea name=\"text252\" id=\"text252\" rows=\"5\" cols=\"50\" style=\"width: 100%; max-width: 25em; height: 8em; vertical-align: middle;\" ><\/textarea><\/div><\/div><\/div>"}];
+
+var fparams = {
+    id : 'S950893888',
+    stype : 'free',
+    postmailFrom : 'systemDefault',
+    postmailFromName : 'tkna001',
+    ruleList : ''
+}
+
+$(function(){
+})
+</script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-1555296-5', 'auto');
+ga('send', 'pageview', '/assemble-form.php?go=show-log');
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0FXMHQBRXQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7Q1R4W6ZQS', {
+    send_page_view: true,
+  });
+
+  // it covers the whole formzu site.
+  gtag('config', 'G-XRHQG0MQ55', {
+    send_page_view: true,
+  });
+</script>
+</head>
+<body>
+
+<div id="display-header">
+    <div class="formzu-logo">
+        <img src="/image/public/formzu-logo-200.png" />
+    </div>
+    <div class="menu-bars" onclick="$('.header-list').slideToggle()">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="header-toggle">
+        <ul class="header-list">
+                    <li class="form-stype">種別：
+            無料フォーム            </li>
+                <li class="logout-link" onclick="logoutNotSave()">途中でやめる</li>
+        <li class="memo-pad-link" onclick="toggleMemoPad()">メモ帳</li>
+        <li class="form-trouble-link" onclick="openFormWindow('https://ws.formzu.net/dist/S7102072/?importv=S950893888')">不具合見つけた</li>
+        <li class="form-request-link" onclick="openFormWindow('https://ws.formzu.net/dist/S82235520/?importv=S950893888')">改善要望</li>
+        <!--
+        <li class="form-trouble-link" onclick="openFormWindow('https://z0.zaragas.formzu.jp/dist/S7102072/?importv=S950893888')">不具合見つけた</li>
+        <li class="form-request-link" onclick="openFormWindow('https://z0.zaragas.formzu.jp/dist/S82235520/?importv=S950893888')">改善要望</li>
+        -->
+        </ul>
+        <div id="instruction-msg" class="instruction-msg"><a href="https://twitter.com/formzu_akita" target="_blank">X(旧Twitter)で、formzuの最新情報を取得できます（別ウィンドウ）</a></div>
+    </div>
+</div><!-- display-header -->
+
+
+<div id="display-main">
+
+<div id="navigation-wrap">
+<!-- 画面左ナビゲーション -->
+<div id="navigation-main">
+<ul id="item-list">
+<li id="nav-show-form" onclick="showDummyForm()">フォーム表示</li>
+<li id="nav-show-forminfo" onclick="showForminfo()">フォーム基本情報</li>
+<li class="unit" onclick="showItemData('item-0')"><span class="item-index-num">1</span>読み聞かせお疲れ様でした。
+ここに、読み聞かせ…</li>
+<li class="unit" onclick="showItemData('item-1')"><span class="item-index-num" style="background-color: #116b97;">2</span>読み手名
+</li>
+<li class="unit" onclick="showItemData('item-2')"><span class="item-index-num" style="background-color: #116b97;">3</span>読み聞かせ日</li>
+<li class="unit" onclick="showItemData('item-3')"><span class="item-index-num" style="background-color: #116b97;">4</span>学　年</li>
+<li class="unit" onclick="showItemData('item-4')"><span class="item-index-num" style="background-color: #116b97;">5</span>本のタイトル</li>
+<li class="unit" onclick="showItemData('item-5')"><span class="item-index-num">6</span>子どもたちの様子</li>
+<li class="unit" onclick="showItemData('item-6')"><span class="item-index-num">7</span>その他　気づいた事やメモなど</li>
+<li id="show-add-item" onclick="changeLocation('add-item')">【項目の追加】</li>
+</ul><!-- item-list -->
+
+<ul id="operation-list">
+<li class="active" style="background-image: url(/image/assemble/operation-list-help.gif);" onClick="changeLocation('show-guidance')">作成ガイド<br><span style="font-size: 0.9em;">(操作が分からない場合は)</span></li>
+<li class="active" style="background-image: url(/image/assemble/operation-list-order.gif);" onClick="changeLocation('edit-order')" >順番並べ替え</li>
+<li id="opelist-design">
+    <ul id="submenu-design" class="submenu">
+    <li class="active" style="background-image: url(/image/assemble/operation-list-design.gif);" onclick="changeLocation('edit-design')">デザイン設定</li>
+    <li class="active" style="background-image: url(/image/assemble/operation-list-album.png);" onclick="changeLocation('show-album')">
+            <span style="color: #777">画像アルバム</span><img src="/image/assemble/lock-icon-16.png" class="opelist-lock">
+        </li>
+    <!-- <li class="active" style="background-image: url(/image/assemble/operation-list-design.gif);" onclick="changeLocation('edit-header')">ヘッダ画像</li> -->
+    </ul>
+    デザイン設定<img src="/image/assemble/triangle-blue.gif" class="opelist-triangle">
+</li>
+<li id="opelist-mail">
+    <ul id="submenu-mail" class="submenu">
+    <li class="active" style="background-image: url(/image/assemble/operation-list-postmail.png);" onClick="changeLocation('edit-postmail')">投稿通知メール</li>
+    <li style="background-image: url(/image/assemble/operation-list-autoreply.png);" onclick="changeLocation('edit-autoreply')">自動返信メール</li>
+    <li onclick="changeLocation('edit-copymail')" style="padding-left: 4px;"><i class="fas fa-reply" style="font-size: 0.8em; margin: 0 4px 0 0;"></i>コピーメール</li>
+    </ul>
+    メール設定<img src="/image/assemble/triangle-blue.gif" class="opelist-triangle">
+</li>
+<li id="opelist-show-log">
+    <ul id="submenu-show-log" class="submenu">
+    <li style="background-image: url(/image/assemble/operation-list-log.gif)" onclick="changeLocation('show-log')">ログデータ</li>
+    <li style="background-image: url(/image/assemble/statistics-icon16.png)" onclick="changeLocation('show-statistics')">統計データ</li>
+    </ul>
+    ログデータ<img src="/image/assemble/triangle-blue.gif" class="opelist-triangle">
+</li>
+<li id="opelist-finish">
+    <ul id="submenu-finish" class="submenu">
+    <li class="active" style="background-image: url(/image/assemble/operation-list-finishpage.gif);" onClick="changeLocation('edit-finishpage')">投稿完了ページ</li>
+    <li class="active" style="padding-left: 4px;" onClick="changeLocation('edit-paypal')">
+        <i class="fab fa-paypal"></i>&ensp;PayPal
+        <span style="font-size: 0.7em; display: inline-block; margin: 0 0 0 18px;">クレジット決済／銀行口座支払</span>
+    </li>
+    <li class="active" style="padding-left: 4px;" onclick="changeLocation('edit-connect')"><i class="fa fa-link" aria-hidden="true"></i>&ensp;外部サービスと接続</li>
+    <li class="active" style="background-image: url(/image/assemble/operation-list-affiliate.png);" onclick="changeLocation('edit-affiliate')">
+            <span style="color: #777">アフィリエイト設定</span><img src="/image/assemble/lock-icon-16.png" class="opelist-lock">
+        </li>
+    </ul>
+投稿完了／外部連携<img src="/image/assemble/triangle-blue.gif" class="opelist-triangle" /></li>
+<li class="active" style="background-image: url(/image/assemble/operation-list-shoppingform.gif);" onclick="changeLocation('edit-shoppingform')">注文フォーム</li>
+<li class="active" style="background-image: url(/image/assemble/operation-list-rule.png);" onClick="changeLocation('edit-rule')">条件設定</li>
+<li id="opelist-edit-analysis" class="active">
+    <ul id="submenu-edit-analysis" class="submenu">
+    <li style="background-image: url(/image/assemble/operation-list-analysis.png)" onclick="changeLocation('edit-analysis')">アクセス解析</li>
+    <li class="active" style="padding-left: 4px;" onclick="changeLocation('edit-tagmng')"><i class="fas fa-tags" style="font-size: 0.8em; margin: 0 4px 0 0;"></i>タグマネージャー</li>
+    <li style="background-image: url(/image/assemble/operation-list-optimization.png);" onclick="changeLocation('show-optimization')">
+            <span style="color: #777">フォーム最適化</span><img src="/image/assemble/lock-icon-16.png" class="opelist-lock" >
+        </li>
+    </ul>
+    フォーム解析<img src="/image/assemble/triangle-blue.gif" class="opelist-triangle">
+</li>
+<li style="background-image: url(/image/assemble/operation-list-access.gif)" onclick="changeLocation('edit-access')">アクセス制限</li>
+<li class="active" style="background-image: url(/image/assemble/operation-list-language.gif);" onClick="changeLocation('edit-language')">言語設定</li>
+<li id="opelist-misc" class="active">
+    <ul id="submenu-misc" class="submenu">
+    <li class="active" style="background-image: url(/image/assemble/operation-list-mobile.gif);" onClick="changeLocation('edit-mobile')">携帯電話用フォーム</li>
+            <li class="active" style="background-image: url(/image/edit_delete.png);" onclick="changeLocation('confirm-delete')">フォーム削除</li>
+        </ul>
+    <i class="fas fa-ellipsis-v opelist-fa-icon"></i>その他／削除<img src="/image/assemble/triangle-blue.gif" class="opelist-triangle">
+</li>
+<li style="padding: 0px 4px 0px 4px; border: 1px solid white; cursor: auto;" onmouseover="this.style.backgroundColor='#fff'"><hr size="1" style="color: #ccc;"/></li>
+<li class="active" style="background-image: url(/image/assemble/operation-list-save.gif);" onClick="changeLocation('confirm-save')">フォーム保存</li>
+</ul>
+</div> <!-- navigation-main -->
+
+</div> <!-- navigation-wrap -->
+<!-- ここまで 画面左ナビゲーション -->
+
+
+<div id="layers">
+
+
+
+
+<!-- 画面切替 -->
+<div id="loading-screen">
+<div>読み込み中です...</div>
+</div>
+<!-- 画面切替 ここまで -->
+
+<!-- ダミーフォーム -->
+<div id="dummy-form">
+<div class="dummy-form-header">
+<button type="button" onclick="hideElementById('dummy-form');" class="close-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+</div><!--dummy-form-header-->
+
+
+<div class="dummy-form-main" style="position: relative;">
+
+
+<div id="save-load-layer" onmouseover="$('#save-load-buttons').show()" onmouseout="$('#save-load-buttons').hide()">
+<p id="save-load-title" onclick="$('#save-load-buttons').toggle()">入力内容保存／読込</p>
+<p id="save-load-message"></p>
+<div id="save-load-buttons" style="display: none;">
+<ul>
+<li><button type="button">保存したデータ読込</button></li>
+<li><button type="button">現在の入力内容を保存</button></li>
+<li><button type="button">保存データ削除</button></li>
+</ul>
+<div style="text-align: left; margin: 4px 2px 2px 2px; background-color: #fef7f6; padding: 3px; color: #444;">この機能は投稿者が自分の入力データを保存できます。<br />不要な場合は「フォーム基本情報」→「入力データ保存」から無効にできます。</div>
+</div>
+</div>
+
+<div class="comform-wrap">
+<div class="comform-title"><img src="/image/assemble/edit-icon.png" alt="編集" id="edit-icon-forminfo" class="edit-icon" style="display: none; float: none;" onclick="loadingScreen(); goEditForminfo()" />西小⭐️読み聞かせ⭐️記録ノート</div>
+<div class="comform-container">
+<div class="comform-row"><div class="itemInput withEditIcon itemComment"><img src="/image/assemble/edit-icon.png" alt="編集" id="edit-icon-0" class="edit-icon" style="display: none;" onclick="loadingScreen(); goEditItem('item-0')" >読み聞かせお疲れ様でした。<br />
+ここに、読み聞かせの記録をご記入下さい♪<br />
+</div><!-- itemInput --></div><!-- comform-row -->
+<div class="comform-row"><div class="itemTitle withEditIcon"><img src="/image/assemble/edit-icon.png" alt="編集" id="edit-icon-1" class="edit-icon" style="display: none;" onclick="loadingScreen(); goEditItem('item-1')" >読み手名<br />
+<span class="req-mark">必須</span></div><!-- itemTitle --><div class="itemInput"><input type="text" name="tkna001" id="tkna001" size="20" value="" style="width: 100%; max-width:10em;" class="required" /></div><!-- itemInput --></div><!-- comform-row -->
+<div class="comform-row"><div class="itemTitle withEditIcon"><img src="/image/assemble/edit-icon.png" alt="編集" id="edit-icon-2" class="edit-icon" style="display: none;" onclick="loadingScreen(); goEditItem('item-2')" >読み聞かせ日<span class="req-mark">必須</span></div><!-- itemTitle --><div class="itemInput"><select name="date206-month" id="date206-month" class="required" ><option value=""></option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>&nbsp;月&nbsp;<select name="date206-day" id="date206-day" class="required" ><option value=""></option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>&nbsp;日&nbsp;<span class="item-date-calendar" data-target-item-id="date206" ><img src="/image/icon-calendar-32.png" style="height: 26px; vertical-align: middle; position: relative; top: -2px;"></span></div><!-- itemInput --></div><!-- comform-row -->
+<div class="comform-row"><div class="itemTitle withEditIcon"><img src="/image/assemble/edit-icon.png" alt="編集" id="edit-icon-3" class="edit-icon" style="display: none;" onclick="loadingScreen(); goEditItem('item-3')" >学　年<span class="req-mark">必須</span></div><!-- itemTitle --><div class="itemInput"><select name="choi909" id="choi909" class="itemChoice required" ><option value=""></option><option value="1年生" >1年生</option><option value="2年生" >2年生</option><option value="3年生" >3年生</option><option value="4年生" >4年生</option><option value="5年生" >5年生</option><option value="6年生" >6年生</option></select></div><!-- itemInput --></div><!-- comform-row -->
+<div class="comform-row"><div class="itemTitle withEditIcon"><img src="/image/assemble/edit-icon.png" alt="編集" id="edit-icon-4" class="edit-icon" style="display: none;" onclick="loadingScreen(); goEditItem('item-4')" >本のタイトル<span class="req-mark">必須</span></div><!-- itemTitle --><div class="itemInput"><input type="text" name="text628" id="text628" size="30" value="" style="width: 100%; max-width: 15em" class="required" /></div><!-- itemInput --></div><!-- comform-row -->
+<div class="comform-row"><div class="itemTitle withEditIcon"><img src="/image/assemble/edit-icon.png" alt="編集" id="edit-icon-5" class="edit-icon" style="display: none;" onclick="loadingScreen(); goEditItem('item-5')" >子どもたちの様子</div><!-- itemTitle --><div class="itemInput"><textarea name="text001" id="text001" rows="5" cols="50" style="width: 100%; max-width: 25em; height: 8em; vertical-align: middle;" ></textarea></div><!-- itemInput --></div><!-- comform-row -->
+<div class="comform-row"><div class="itemTitle withEditIcon"><img src="/image/assemble/edit-icon.png" alt="編集" id="edit-icon-6" class="edit-icon" style="display: none;" onclick="loadingScreen(); goEditItem('item-6')" >その他　気づいた事やメモなど</div><!-- itemTitle --><div class="itemInput"><textarea name="text252" id="text252" rows="5" cols="50" style="width: 100%; max-width: 25em; height: 8em; vertical-align: middle;" ></textarea></div><!-- itemInput --></div><!-- comform-row -->
+</div><!-- comform-container -->
+<div class="form-buttons"><button type="button" class="deco-button-wide" onclick="$(this).next('p').toggle()">内容確認画面へ</button><p style="display: none; font-size: 0.8em; margin: 4px 0px 0px 0px; color: crimson">このボタンはサンプルです。動作しません。</p></div>
+<div class="form-ad-message">無料フォームの場合は、ここに広告が表示されます。</div></div> <!-- .comform-wrap -->
+
+
+</div><!-- dummy-form-main -->
+
+<div class="dummy-form-footer">
+<button type="button" onclick="hideElementById('dummy-form');" class="close-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+</div>
+</div> <!-- dummy-form -->
+<!-- ここまで ダミーフォーム -->
+
+
+<!-- フォーム基本情報 -->
+<div id="forminfo-layer">
+<div class="item-sample">
+    <div class="comform-title">西小⭐️読み聞かせ⭐️記録ノート</div>
+</div>
+
+<div class="forminfo-data">
+    <div class="forminfo-row">
+        <div class="forminfo-title">フォームID</div>
+        <div class="forminfo-value">S950893888</div>
+    </div>
+<div class="forminfo-row">
+    <div class="forminfo-title">フォームタイトル</div>
+    <div class="forminfo-value">西小⭐️読み聞かせ⭐️記録ノート</div>
+</div>
+<div class="forminfo-row">
+    <div class="forminfo-title">メールアドレス</div>
+    <div class="forminfo-value"><span class="email">nami761@gmail.com</span></div>
+</div>
+<div class="forminfo-row">
+    <div class="forminfo-title">パスワード</div>
+    <div class="forminfo-value">(パスワードは表示しません)</div>
+</div>
+    <div class="forminfo-row">
+        <div class="forminfo-title">作成日時</div>
+        <div class="forminfo-value">2026-06-22 09:58:53</div>
+    </div>
+<div class="forminfo-row">
+    <div class="forminfo-title">トップページURL</div>
+    <div class="forminfo-value">なし</div>
+</div>
+<div class="forminfo-row">
+    <div class="forminfo-title">公開開始日／停止日</div>
+    <div class="forminfo-value">指定無し／指定無し</div>
+</div>
+<div class="forminfo-row">
+    <div class="forminfo-title">定員</div>
+    <div class="forminfo-value">制限無し</div>
+</div>
+<div class="forminfo-row">
+    <div class="forminfo-title">投稿カウンタ</div>
+    <div class="forminfo-value">無効</div>
+</div>
+<!--
+<div class="forminfo-row">
+    <div class="forminfo-title">コピーメール</div>
+    <div class="forminfo-value">有効（コピーメール機能を表示する）</div>
+</div>
+-->
+<div class="forminfo-row">
+    <div class="forminfo-title">投稿者特定機能</div>
+    <div class="forminfo-value">
+                無効
+            </div>
+</div>
+<div class="forminfo-row">
+    <div class="forminfo-title">個人情報の取扱いについて</div>
+    <div class="forminfo-value">
+        個人情報の取扱いについてを表示しない    </div>
+</div>
+<div class="forminfo-row" style="display: none">
+    <div class="forminfo-title">最終保存日時</div>
+    <div class="forminfo-value">
+        2026-06-22 11:41:58 (49.109.235.214)    </div>
+</div>
+</div><!-- forminfo-data -->
+
+<div class="layer-buttons">
+<button type="button" onClick="goEditForminfo()" style="margin-right: 48px;">パラメータ変更</button>
+<button type="button" onClick="hideElementById('forminfo-layer');">×閉じる</button>
+</div>
+</div><!-- forminfo-layer -->
+<!-- ここまで フォーム基本情報 -->
+
+
+<div id="item-layer"></div>
+<!-- 項目詳細データ -->
+<!-- ここまで 項目詳細データ -->
+
+</div><!-- layers -->
+
+
+<form name="F" method="post" action="/assemble-form.php">
+<input type="hidden" name="go" value="" />
+<input type="hidden" name="target_item_num" value="" />
+
+<div id="background-screen">
+
+<div id="background-mask"></div>
+
+<link rel="stylesheet" type="text/css" href="/css/show-log.min.css?d=20210607">
+<style type="text/css">
+#display-main {
+width: 100%;
+}
+
+#link-go-statistics {
+color: blue;
+text-decoration: none;
+background: url(/image/assemble/statistics-icon16.png) no-repeat;
+padding: 0px 0px 0px 20px;
+}
+
+
+.over-logs {
+margin: 0px 0px 16px 0px;
+background-color: #fff9f9;
+font-size: 0.80em;
+padding: 2px;
+border: 1px solid #ffcccc;
+}
+
+.toll-link {
+margin: 0px 2px 0px 2px;
+color: blue;
+}
+
+.log-list-setting-command {
+text-decoration: none;
+color: blue;
+cursor: pointer;
+font-size: 0.8em;
+}
+
+#log-size-setting {
+display: none;
+margin: 8px 0 0 0;
+}
+
+
+.grid-item {
+display: table;
+}
+
+.grid-item-row {
+display: table-row;
+}
+
+.grid-item-que {
+display: table-cell;
+max-width: 300px;
+padding: 2px 8px 2px 0;
+}
+
+.grid-item-ansText {
+display: table-cell;
+padding: 2px 0;
+}
+
+.save-maillog-off {
+    color: #fff;
+    font-size: 0.85em;
+    background-color: crimson;
+    padding: 4px;
+    margin: 6px 0 0 0;
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+}
+</style>
+
+<h2>ログデータ</h2>
+
+<div style="margin-bottom: 24px;">
+<input type="checkbox" name="saveMailLogOn" id="saveMailLogOn" value="1" checked="checked" />
+<label for="saveMailLogOn">ログデータ保存を有効にする。</label>
+<button type="button" onClick="goUpdateLog()">更新する</button>
+
+
+</div>
+
+<div class="search-condition">
+<span class="inline-block">
+    <select name="firstDateYear" id="firstDateYear">
+    <option value=""></option>
+    <option value="2026" >2026</option><option value="2025" >2025</option><option value="2024" >2024</option><option value="2023" >2023</option><option value="2022" >2022</option><option value="2021" >2021</option><option value="2020" >2020</option><option value="2019" >2019</option><option value="2018" >2018</option><option value="2017" >2017</option><option value="2016" >2016</option><option value="2015" >2015</option><option value="2014" >2014</option><option value="2013" >2013</option><option value="2012" >2012</option><option value="2011" >2011</option><option value="2010" >2010</option>    </select>&ensp;年
+    <select name="firstDateMonth" id="firstDateMonth">
+    <option value=""></option>
+    <option value="01" >1</option><option value="02" >2</option><option value="03" >3</option><option value="04" >4</option><option value="05" >5</option><option value="06" >6</option><option value="07" >7</option><option value="08" >8</option><option value="09" >9</option><option value="10" >10</option><option value="11" >11</option><option value="12" >12</option>    </select>&ensp;月
+    <select name="firstDateDay" id="firstDateDay">
+    <option value=""></option>
+    <option value="01" >1</option><option value="02" >2</option><option value="03" >3</option><option value="04" >4</option><option value="05" >5</option><option value="06" >6</option><option value="07" >7</option><option value="08" >8</option><option value="09" >9</option><option value="10" >10</option><option value="11" >11</option><option value="12" >12</option><option value="13" >13</option><option value="14" >14</option><option value="15" >15</option><option value="16" >16</option><option value="17" >17</option><option value="18" >18</option><option value="19" >19</option><option value="20" >20</option><option value="21" >21</option><option value="22" >22</option><option value="23" >23</option><option value="24" >24</option><option value="25" >25</option><option value="26" >26</option><option value="27" >27</option><option value="28" >28</option><option value="29" >29</option><option value="30" >30</option><option value="31" >31</option>    </select>&ensp;日
+</span>
+から
+<span class="inline-block">
+    <select name="lastDateYear" id="lastDateYear">
+    <option value=""></option>
+    <option value="2026" >2026</option><option value="2025" >2025</option><option value="2024" >2024</option><option value="2023" >2023</option><option value="2022" >2022</option><option value="2021" >2021</option><option value="2020" >2020</option><option value="2019" >2019</option><option value="2018" >2018</option><option value="2017" >2017</option><option value="2016" >2016</option><option value="2015" >2015</option><option value="2014" >2014</option><option value="2013" >2013</option><option value="2012" >2012</option><option value="2011" >2011</option><option value="2010" >2010</option>    </select>&ensp;年
+    <select name="lastDateMonth" id="lastDateMonth">
+    <option value=""></option>
+    <option value="01" >1</option><option value="02" >2</option><option value="03" >3</option><option value="04" >4</option><option value="05" >5</option><option value="06" >6</option><option value="07" >7</option><option value="08" >8</option><option value="09" >9</option><option value="10" >10</option><option value="11" >11</option><option value="12" >12</option>    </select>&ensp;月
+    <select name="lastDateDay" id="lastDateDay">
+    <option value=""></option>
+    <option value="01" >1</option><option value="02" >2</option><option value="03" >3</option><option value="04" >4</option><option value="05" >5</option><option value="06" >6</option><option value="07" >7</option><option value="08" >8</option><option value="09" >9</option><option value="10" >10</option><option value="11" >11</option><option value="12" >12</option><option value="13" >13</option><option value="14" >14</option><option value="15" >15</option><option value="16" >16</option><option value="17" >17</option><option value="18" >18</option><option value="19" >19</option><option value="20" >20</option><option value="21" >21</option><option value="22" >22</option><option value="23" >23</option><option value="24" >24</option><option value="25" >25</option><option value="26" >26</option><option value="27" >27</option><option value="28" >28</option><option value="29" >29</option><option value="30" >30</option><option value="31" >31</option>    </select>&ensp;日
+</span>
+<button type="button" onclick="goSearch()">照会</button>
+<input type="hidden" name="first-date" id="firstDate" value="" />
+<input type="hidden" name="last-date" id="lastDate" value="" />
+</div><!-- search-condition -->
+
+<div style="margin: 0px 0px 8px 0px;">
+    全部で&ensp;1&ensp;件あります。
+    <button type="button" onclick="$('#operation').toggle('fade')">ログ操作を表示</button>
+    <span style="font-size: 0.9em;">（ログ削除／CSVファイルダウンロード）</span>
+</div>
+
+<div id="operation">
+<table>
+<tr><th>ダウンロード</th>
+<td>
+    <div style="margin: 0px 0px 6px 0px;">
+        <button type="button" onclick="goDownLoadMailLog()">CSVファイルダウンロード</button><span style="font-size: 0.9em;">
+        （全保存ログをダウンロードします）    </div>
+
+    <span class="tip"
+        style="font-size: 0.9em;"
+        title="ほとんどの場合は「SJIS」で問題ありません。<br>
+               日本語と英語以外の文字を使用している場合は「UTF-8」でダウンロードしてください。<br>
+               ただし、エクセルで「UTF-8」のCSVファイルを開くには「エクセル2007」以上が必要です。"
+    >ファイルの文字コード</span>
+    <select id="fileCharSet" name="fileCharSet">
+        <option value="SJIS">SJIS</option>
+        <option value="UTF-8">UTF-8</option>
+    </select>
+
+    <ul class="download-option-list">
+        <li>
+            <label for="postcodeDivided">
+            <input type="checkbox" name="postcodeDivided" id="postcodeDivided" value="1"
+                onclick="if ($(this).prop('checked') == true) $('#addressSeparated').prop('checked', false)">
+            住所項目の郵便番号を分けて出力
+            </label>
+        </li>
+        <li>
+            <label for="addressSeparated">
+            <input type="checkbox" name="addressSeparated" id="addressSeparated" value="1"
+                onclick="if ($(this).prop('checked') == true) $('#postcodeDivided').prop('checked', false)">
+            住所項目の郵便番号／都道府県／市区町村／町名番地／建物名を分けて出力
+            </label>
+        </li>
+        <li>
+            <label for="postmarkNoOutput">
+            <input type="checkbox" name="postmarkNoOutput" id="postmarkNoOutput" value="1">
+            郵便番号マーク（〒）を出力しない
+            </label>
+        </li>
+        <li>
+            <label for="checkboxSeparated">
+            <input type="checkbox" name="checkboxSeparated" id="checkboxSeparated" value="1">
+            選択型項目チェックボックスの選択肢をセル別に分けて出力
+            </label>
+        </li>
+        <li>
+            <label for="shopTotalSeparated">
+            <input type="checkbox" name="shopTotalSeparated" id="shopTotalSeparated" value="1">
+            注文フォームの合計金額も出力
+            </label>
+        </li>
+        <li>
+            <label for="shopAmountSeparated">
+            <input type="checkbox" name="shopAmountSeparated" id="shopAmountSeparated" value="1">
+            注文フォームの商品ごとの注文数も出力
+            </label>
+        </li>
+        <li>
+            <label for="intHyphenToString">
+                <input type="checkbox" name="intHyphenToString" id="intHyphenToString" value="1">
+                数字とハイフンのみが入力されたテキスト項目を文字列として出力
+            </label>
+        </li>
+    </ul>
+</td></tr>
+
+<tr><th>統計データ</th>
+<td>
+    <a href="javascript:void(0)" onClick="loadingScreen(); location.href='/assemble-form.php?go=show-statistics'" id="link-go-statistics">統計データ表示</a>
+</td></tr>
+
+
+<tr><th>ログ削除</th>
+<td>
+    <button type="button" onClick="goDeleteLog()">チェックしたデータを削除</button>
+    <button type="button" onClick="goDeleteAllLogs()">ログデータを全て削除</button>
+</td></tr>
+
+
+</table>
+</div><!--operation-->
+
+<div class="pager"></div>
+
+<div id="log-list-setting" style="margin-bottom: 8px;">
+<span class="log-list-setting-command" onclick="checkAllLogs()" style="display: inline-block; width: 80px; margin: 0 0 8px 0;">全チェック</span>
+<span class="log-list-setting-command" onclick="showAllDetailToggle(this)" style="display: inline-block; width: 120px; margin: 0px 110px 8px 0px;">ログを全て開く</span>
+<span class="sub-info-selector"><select onchange="dispLogSubInfo($(this).val())"><option value="tkna001">[2]読み手名
+</option></select>&ensp;を表示する</span><!-- sub-info -->
+</div>
+
+<div id="log-list">
+
+<div id="headline-log-date-0" class="headline-log-date" style="background-color: #f0f0f0;"><input type="checkbox" name="logNums[]" value="0" class="logNums" />&ensp;<span class="log-number-text"> No.1</span><span class="log-date-text" onclick="showDetailToggle(0)">2026年06月22日 10時34分43秒</span><span class="log-sub-info"></span></div>
+<dl id="detail-log-0" class="detail-log"><dt>読み手名
+</dt><dd>波方</dd><dt>読み聞かせ日</dt><dd>06月10日</dd><dt>学　年</dt><dd>4年生</dd><dt>本のタイトル</dt><dd>たたたたぬき</dd></dl><!-- detail-log -->
+
+</div> <!-- log-list -->
+
+<div class="pager"></div>
+
+<div><a href="#top" style="color: blue; font-size: 0.9em;">画面上に戻る</a></div>
+
+<div class="modal-register-log-input">
+    <div class="register-log-title">
+        投稿通知メールからログデータを復元します。<br>
+        メールの本文をペーストしてください。<br>
+        <div style="font-size: 0.9em; color: crimson;">
+            この機能は現在「テスト版」です。正しく登録できない場合はお知らせください。
+        </div>
+    </div>
+    <textarea class="register-log-textarea"></textarea>
+    <button type="button" onclick="goExtractLog()">ログデータを抽出する</button>
+</div>
+
+
+<div class="modal-register-log-confirm">
+        <div class="register-log-title">
+        抽出データを確認してください。<br>
+        </div>
+        <div class="register-log-confirm-values"></div>
+        <button type="button" class="button-go-back" onclick="goBackExtractLog()">戻る</button>
+        <button type="button" onclick="goRegisterLog()">このデータを登録する</button>
+</div>
+
+
+
+<input type="hidden" id='newLogDataJson' name="newLogDataJson" value="">
+
+<script src="/js/show-log.min.js?d=20191031"></script>
+<script type="text/javascript">
+function goUpdateLog() {
+    document.forms[0].go.value = 'update-log';
+    document.forms[0].submit();
+}
+
+
+function goDownLoadMailLog() {
+    var queries = '';
+    if ($('#fileCharSet').val() == 'UTF-8') {
+        var charSet = 'UTF-8';
+        queries += '&fileCharSet=' + charSet;
+    }
+    if ($('#postcodeDivided').is(':checked')) {
+        queries += '&postcodeDivided=' + 1;
+    }
+    if ($('#addressSeparated').is(':checked')) {
+        queries += '&addressSeparated=' + 1;
+    }
+    if ($('#postmarkNoOutput').is(':checked')) {
+        queries += '&postmarkNoOutput=' + 1;
+    }
+    if ($('#checkboxSeparated').is(':checked')) {
+        queries += '&checkboxSeparated=' + 1;
+    }
+    if ($('#intHyphenToString').is(':checked')) {
+        queries += '&intHyphenToString=' + 1;
+    }
+    if ($('#shopTotalSeparated').is(':checked')) {
+        queries += '&shopTotalSeparated=' + 1;
+    }
+    if ($('#shopAmountSeparated').is(':checked')) {
+        queries += '&shopAmountSeparated=' + 1;
+    }
+    if ($('#firstDate').val() != '') {
+        queries += '&firstDate=' + $('#firstDate').val();
+    }
+    if ($('#lastDate').val() != '') {
+        queries += '&lastDate=' + $('#lastDate').val();
+    }
+    queries += '&id=' + fparams.id;
+    location.href = '?go=download-maillog' + queries;
+}
+
+function goDeleteLog() {
+    if ($('.logNums:checked').length == 0) {
+        alert('チェックされているデータがありません。');
+        return false;
+    }
+    if (!confirm('チェックしたデータを削除します。\n本当によろしいですか?')) {
+        return false;
+    }
+    setDateValues();
+    document.forms[0].go.value = 'delete-maillog';
+    document.forms[0].submit();
+}
+
+
+function goDeleteAllLogs() {
+    if (!confirm('すべてのログデータを削除します。\n本当によろしいですか?')) {
+        return false;
+    }
+    document.forms[0].go.value = 'delete-maillogs-all';
+    document.forms[0].submit();
+}
+
+function goSearch() {
+    var firstY = $('#firstDateYear').val();
+    var firstM = $('#firstDateMonth').val();
+    var firstD = $('#firstDateDay').val();
+    if (firstY != '' && firstM != '' && firstD != '') {
+        ;
+    }
+    else if (firstY == '' && firstM == '' && firstD == '') {
+        ;
+    }
+    else {
+        alert('開始日の指定が不完全です。');
+        return false;
+    }
+
+    var lastY = $('#lastDateYear').val();
+    var lastM = $('#lastDateMonth').val();
+    var lastD = $('#lastDateDay').val();
+    if (lastY != '' && lastM != '' && lastD != '') {
+        ;
+    }
+    else if (lastY == '' && lastM == '' && lastD == '') {
+        ;
+    }
+    else {
+       alert('終了日の指定が不完全です。');
+       return false;
+    }
+
+    setDateValues();
+    var now = new Date().getTime();
+    firstDate = $('#firstDate').val().replace(/-/g, '/');
+    if (Date.parse(firstDate) >= now) {
+        alert('開始日に未来の日付が指定されています。\n' + firstDate)
+        return false;
+    }
+
+    lastDate = $('#lastDate').val().replace(/-/g, '/');
+    if (Date.parse(lastDate) >= now) {
+        alert('終了日に未来の日付が指定されています。\n' + lastDate)
+        return false;
+    }
+    document.forms[0].go.value = 'show-log';
+    document.forms[0].submit();
+}
+
+
+function setDateValues() {
+    var firstYear  = $('#firstDateYear').val();
+    var firstMonth = $('#firstDateMonth').val();
+    var firstDay   = $('#firstDateDay').val();
+    if (firstYear != '' && firstMonth != '' && firstDay != '') {
+        $('#firstDate').val(firstYear + '-' + firstMonth + '-' + firstDay);
+    }
+    else {
+        $('#firstDate').val('');
+    }
+
+    var lastYear  = $('#lastDateYear').val();
+    var lastMonth = $('#lastDateMonth').val();
+    var lastDay   = $('#lastDateDay').val();
+    if (lastYear != '' && lastMonth != '' && lastDay != '') {
+        $('#lastDate').val(lastYear + '-' + lastMonth + '-' + lastDay);
+    }
+    else {
+        $('#lastDate').val('');
+    }
+}
+
+
+function checkAllLogs() {
+    if (typeof checkAllLogs.checked === 'undefined') {
+        checkAllLogs.checked = false;
+    }
+    if (checkAllLogs.checked) {
+        $('.logNums').prop('checked', false);
+        checkAllLogs.checked = false;
+    }
+    else {
+        $('.logNums').prop('checked', true);
+        checkAllLogs.checked = true;
+    }
+
+}
+
+function showDetailToggle(num) {
+    if ($('#detail-log-' + num).css('display') == 'block') {
+        $('#detail-log-' + num).slideUp('fast');
+    }
+    else {
+        $('#detail-log-' + num).slideDown('fast');
+    }
+}
+
+function showAllDetailToggle(Ob) {
+    if (typeof showAllDetailToggle.flagShowed === 'undefined') {
+        showAllDetailToggle.flagShowed = false;
+    }
+    if (showAllDetailToggle.flagShowed) {
+        $('.detail-log').hide();
+        showAllDetailToggle.flagShowed = false;
+        $(Ob).text('ログを全て開く');
+    } else {
+        $('.detail-log').show({
+            'effect' : 'blind',
+            'direction' : 'up',
+            'duration' : 300
+       });
+        showAllDetailToggle.flagShowed = true;
+        $(Ob).text('ログを全て閉じる');
+    }
+}
+
+var noInputItemTypes = ["comment","heading","image","horizontalrule","video","calendar"];
+
+
+$(function(){
+    var param = {
+        group: 'registerLog',
+        loop: false,
+        navigateArrows: false,
+    };
+    $('.modal-register-log-input').iziModal(param);
+    $('.modal-register-log-confirm').iziModal(param);
+})
+
+var subInfoList = {"tkna001":["\u6ce2\u65b9"]};
+function dispLogSubInfo(itemId) {
+    var list = subInfoList[itemId];
+    $('.log-sub-info').each(function(){
+        var index = $('.log-sub-info').index(this);
+        $(this).html('');
+        if (typeof list !== 'undefined') {
+            $(this).text(list[index]);
+        }
+    })
+}
+$(function(){
+    if ($('.sub-info-selector > select > option').length == 0) {
+        $('.sub-info-selector').hide();
+    }
+    if ($('.sub-info-selector > select').val()) {
+        dispLogSubInfo($('.sub-info-selector > select').val());
+    }
+})
+var noUpdateButton = true;
+</script>
+<script src="/js/assemble-form-responsive.min.js?d=20200627"></script>
+</div> <!-- background-screen -->
+
+</form>
+
+</div> <!-- display-main -->
+
+<div id="display-footer">
+Copyright (C) 2026 formzu Inc. All Rights Reserved.
+</div> <!-- display-footer -->
+
+<div id="tooltip"></div>
+
+<div id="jqui-dialog" title=""><p id="jqui-dialog-msg"></p></div>
+
+<div id="memo-pad" style="display: none">
+<div id="memo-pad-title"><img src="/image/assemble/close-icon24.png" id="memo-pad-close-icon" /><span style="font-weight: bold">メモ帳</span><span style="font-size: 0.7em;">（ここを掴んで動かせます）</span></div>
+<div id="memo-pad-main">
+<textarea id="memo-pad-text" style="padding: 4px; position: relative; left: -4px; margin: 0px 0px 8px 0px;"></textarea><br />
+<div id="memo-pad-menu">
+<span class="tip" title="<ul style=&quot;list-style: decimal outside; padding-left: 20px;&quot;><li>メモ帳のデータはご利用のブラウザ側に保存されます。</li><li>ブラウザ間でのデータ共有はされません。</li><li>ボックスの右下でサイズを変更することができます。</li><li>10000文字まで保存することができます。</li></ul>" style="font-size: 0.8em; cursor: pointer; color: royalblue">使い方ヒント</span>
+&ensp;<span style="font-size: 0.9em;">ファイル：<select id="memo-pad-file-number">
+<option value="0">メモ1</option>
+<option value="1">メモ2</option>
+</select></span>
+</div><!-- memo-pad-menu -->
+</div><!-- memo-pad-main -->
+</div><!-- memo-pad -->
+
+
+<div id="modal-confirm">
+    <div class="modal-confirm-message"></div>
+    <div class="modal-confirm-buttons">
+        <button class="button-cancel" data-izimodal-close="">キャンセル</button><button type="button" class="button-ok">OK</button>
+    </div>
+</div>
+
+<div id="modal-wait">
+    <div class="modal-wait-loading"><img src="/image/assemble/loading.gif"></div>
+    <div class="modal-wait-message"></div>
+</div>
+
+<script type="text/javascript" src="/js/assemble-form.js?d=20240306"></script>
+<script type="text/javascript" src="/js/assemble-form-memo-pad.js?d=20170406"></script>
+<script type="text/javascript" src="/js/assemble-form-textarea-size.js?d=20170224"></script>
+</body>
+</html>
+>>>>>>> master
