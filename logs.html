@@ -234,6 +234,34 @@
 
     a.back { font-size: 0.82rem; color: #7c6fa0; text-decoration: none; }
     a.back:hover { color: #6d28d9; }
+
+    /* Manual refresh bar */
+    #refresh-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    #refresh-btn {
+      padding: 10px 24px;
+      border-radius: 10px;
+      border: none;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #refresh-btn:hover { background: #6d28d9; }
+    #refresh-btn:active { transform: scale(0.97); }
+    #refresh-btn:disabled { background: #c4b5fd; cursor: not-allowed; }
+    #refresh-icon { font-size: 1.1rem; display: inline-block; }
+    #refresh-icon.spinning { animation: spin 0.8s linear infinite; }
+    #refresh-status { font-size: 0.82rem; color: #7c6fa0; }
   </style>
 </head>
 <body>
@@ -244,7 +272,6 @@
     <p>フォームズに送信されたログの一覧</p>
   </div>
   <div class="header-right">
-    <button class="btn" onclick="loadCSV()">更新</button>
     <a class="form-link" href="https://ws.formzu.net/dist/S950893888/" target="_blank">フォームに記録する</a>
     <a class="back" href="index.html">← トップ</a>
   </div>
@@ -264,6 +291,14 @@
     ※ メールで届いたログをコピーして手動で行を追加することもできます。
   </div>
 </details>
+
+<!-- Manual refresh bar -->
+<div id="refresh-bar">
+  <button id="refresh-btn" onclick="manualRefresh()">
+    <span id="refresh-icon">↻</span> 最新データに更新
+  </button>
+  <span id="refresh-status"></span>
+</div>
 
 <!-- Filter bar -->
 <div id="filter-bar">
@@ -442,6 +477,24 @@ function render() {
     });
     tbody.appendChild(tr2);
   });
+}
+
+async function manualRefresh() {
+  const btn = document.getElementById('refresh-btn');
+  const icon = document.getElementById('refresh-icon');
+  const status = document.getElementById('refresh-status');
+  btn.disabled = true;
+  icon.classList.add('spinning');
+  status.textContent = '確認中…';
+  const prev = allRows.length;
+  await loadCSV();
+  icon.classList.remove('spinning');
+  btn.disabled = false;
+  if (allRows.length > prev) {
+    status.textContent = `✨ ${allRows.length - prev}件の新しい記録が見つかりました！`;
+  } else {
+    status.textContent = '最新の状態です（' + new Date().toLocaleTimeString('ja-JP') + '）';
+  }
 }
 
 loadCSV();
