@@ -247,29 +247,6 @@
       border-radius: 12px;
       padding: 12px 16px;
     }
-    #refresh-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 1;
-      flex-wrap: wrap;
-    }
-    .action-btn {
-      padding: 9px 20px;
-      border-radius: 10px;
-      border: none;
-      background: #7c3aed;
-      color: #fff;
-      font-size: 0.88rem;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: background 0.2s;
-    }
-    .action-btn:hover { background: #6d28d9; }
-    .action-btn:disabled { background: #c4b5fd; cursor: not-allowed; }
-    #refresh-hint { font-size: 0.78rem; color: #9d8ec0; }
     #refresh-btn {
       padding: 8px 18px;
       border-radius: 10px;
@@ -321,12 +298,6 @@
 
 <!-- Manual refresh bar -->
 <div id="refresh-bar">
-  <div id="refresh-left">
-    <button id="fetch-btn" class="action-btn" onclick="triggerWorkflow()">
-      <span id="fetch-icon">⬇</span> フォームズから取得
-    </button>
-    <span id="refresh-hint">← フォームに新しい記録を送信した後にクリック</span>
-  </div>
   <button id="refresh-btn" onclick="manualRefresh()">
     <span id="refresh-icon">↻</span> ページを再読み込み
   </button>
@@ -510,53 +481,6 @@ function render() {
     });
     tbody.appendChild(tr2);
   });
-}
-
-async function triggerWorkflow() {
-  const btn = document.getElementById('fetch-btn');
-  const icon = document.getElementById('fetch-icon');
-  const status = document.getElementById('refresh-status');
-
-  let token = localStorage.getItem('gh_token');
-  if (!token) {
-    token = prompt('GitHubトークンを入力してください（一度だけ必要です）\n\n※ ghp_ で始まるトークン');
-    if (!token) return;
-    localStorage.setItem('gh_token', token.trim());
-    token = token.trim();
-  }
-
-  btn.disabled = true;
-  icon.classList.add('spinning');
-  status.textContent = 'フォームズからデータを取得中…';
-
-  try {
-    const res = await fetch(
-      'https://api.github.com/repos/nami761/word-scramble/actions/workflows/update-logs.yml/dispatches',
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/vnd.github+json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ref: 'master' }),
-      }
-    );
-    if (res.status === 401 || res.status === 403) {
-      localStorage.removeItem('gh_token');
-      status.textContent = '⚠ トークンが無効です。もう一度クリックして再入力してください。';
-    } else if (res.status === 204) {
-      status.textContent = '✅ 取得開始しました。1〜2分後に「ページを再読み込み」を押してください。';
-      setTimeout(() => manualRefresh(), 90000); // 90秒後に自動でページ再読み込み
-    } else {
-      status.textContent = `⚠ エラー: HTTP ${res.status}`;
-    }
-  } catch (e) {
-    status.textContent = `⚠ エラー: ${e.message}`;
-  }
-
-  icon.classList.remove('spinning');
-  btn.disabled = false;
 }
 
 async function manualRefresh() {
