@@ -31,70 +31,46 @@
       text-shadow: 0 0 18px #7c3aed88;
     }
 
-    .controls {
+    .header-right {
       display: flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
     }
 
-    #status {
-      font-size: 0.8rem;
-      color: #6b6b9a;
+    /* How-to banner */
+    #howto {
+      background: #1a1a2e;
+      border: 1px solid #3d3d7a;
+      border-left: 4px solid #a78bfa;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: #c4b5fd;
     }
-    #status.ok  { color: #34d399; }
-    #status.err { color: #f87171; }
-
-    .btn {
-      padding: 7px 18px;
-      border-radius: 8px;
-      border: 1px solid #4f46e5;
-      background: transparent;
-      color: #a78bfa;
+    #howto summary {
       cursor: pointer;
       font-size: 0.85rem;
-      transition: background 0.2s;
+      font-weight: bold;
+      color: #a78bfa;
+      letter-spacing: 0.05em;
+      list-style: none;
     }
-    .btn:hover { background: #2d2d5a; }
-
-    /* Config panel */
-    #config-panel {
-      background: #1a1a2e;
-      border: 1px solid #2d2d5a;
-      border-radius: 12px;
-      padding: 20px 24px;
-      margin-bottom: 24px;
-      display: none;
-      flex-direction: column;
-      gap: 14px;
+    #howto summary::before { content: '▶ '; }
+    #howto[open] summary::before { content: '▼ '; }
+    #howto ol { padding-left: 1.4em; margin-top: 10px; }
+    #howto li { margin-bottom: 4px; }
+    #howto code {
+      background: #252545;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.85em;
+      color: #fbbf24;
     }
-    #config-panel.open { display: flex; }
-
-    .field label {
-      display: block;
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      color: #6b6b9a;
-      margin-bottom: 4px;
-    }
-    .field input {
-      width: 100%;
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 1.5px solid #3d3d7a;
-      background: #0f0f1a;
-      color: #e0e0ff;
-      font-size: 0.9rem;
-      outline: none;
-    }
-    .field input:focus { border-color: #7c3aed; }
-
-    .hint-text {
-      font-size: 0.75rem;
-      color: #6b6b9a;
-      line-height: 1.6;
-    }
-    .hint-text a { color: #a78bfa; text-decoration: none; }
+    #howto a { color: #a78bfa; }
 
     /* Filter row */
     #filter-row {
@@ -116,7 +92,21 @@
       outline: none;
     }
     #search:focus { border-color: #7c3aed; }
+
     #count { font-size: 0.8rem; color: #6b6b9a; white-space: nowrap; }
+    #updated { font-size: 0.78rem; color: #6b6b9a; }
+
+    .btn {
+      padding: 7px 18px;
+      border-radius: 8px;
+      border: 1px solid #4f46e5;
+      background: transparent;
+      color: #a78bfa;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #2d2d5a; }
 
     /* Table */
     .table-wrap {
@@ -142,13 +132,10 @@
       cursor: pointer;
       user-select: none;
       border-bottom: 1px solid #2d2d5a;
-      position: sticky;
-      top: 0;
     }
     thead th:hover { color: #a78bfa; }
-    thead th .sort-icon { margin-left: 4px; opacity: 0.5; }
-    thead th.asc .sort-icon::after  { content: ' ▲'; opacity: 1; color: #a78bfa; }
-    thead th.desc .sort-icon::after { content: ' ▼'; opacity: 1; color: #a78bfa; }
+    thead th.asc::after  { content: ' ▲'; color: #a78bfa; }
+    thead th.desc::after { content: ' ▼'; color: #a78bfa; }
 
     tbody tr { border-bottom: 1px solid #1e1e3a; transition: background 0.15s; }
     tbody tr:last-child { border-bottom: none; }
@@ -161,23 +148,15 @@
       word-break: break-word;
       max-width: 320px;
     }
-    tbody td:first-child { color: #6b6b9a; font-size: 0.78rem; white-space: nowrap; }
 
-    /* States */
-    #empty-state {
+    /* State messages */
+    #message {
       text-align: center;
       padding: 60px 24px;
       color: #6b6b9a;
       font-size: 0.95rem;
-      display: none;
+      line-height: 1.8;
     }
-    #loading {
-      text-align: center;
-      padding: 60px 24px;
-      color: #6b6b9a;
-      font-size: 0.95rem;
-    }
-
     .spinner {
       display: inline-block;
       width: 20px; height: 20px;
@@ -190,11 +169,7 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    #auto-label {
-      font-size: 0.78rem;
-      color: #6b6b9a;
-    }
-    #auto-label span { color: #a78bfa; }
+    .err { color: #f87171; }
 
     a.back { font-size: 0.85rem; color: #6b6b9a; text-decoration: none; }
     a.back:hover { color: #a78bfa; }
@@ -204,244 +179,132 @@
 
 <header>
   <h1>FORMS LOG</h1>
-  <div class="controls">
-    <span id="auto-label">自動更新: <span id="countdown">30</span>s</span>
-    <button class="btn" onclick="fetchData()">今すぐ更新</button>
-    <button class="btn" onclick="toggleConfig()">設定</button>
-    <a class="back" href="index.html">← ゲームに戻る</a>
+  <div class="header-right">
+    <button class="btn" onclick="load()">更新</button>
+    <a class="back" href="index.html">← ゲームへ</a>
   </div>
 </header>
 
-<!-- Config panel -->
-<div id="config-panel">
-  <div class="field">
-    <label>スプレッドシート CSV URL</label>
-    <input id="csv-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv&gid=0">
+<!-- How-to -->
+<details id="howto">
+  <summary>フォームズのログを反映させる方法</summary>
+  <ol>
+    <li><a href="https://www.formzu.com/" target="_blank">フォームズ（formzu.com）</a> にログインしてフォームを開く</li>
+    <li>「受信データ」→「CSVダウンロード」でデータを取得</li>
+    <li>ダウンロードした CSV ファイルの名前を <code>logs.csv</code> に変更</li>
+    <li>GitHub のこのリポジトリを開き、<code>logs.csv</code> ファイルを選択 → 鉛筆アイコン（編集）→ 内容を貼り付けて「Commit changes」</li>
+    <li>数分後に GitHub Pages が自動更新され、このページに反映されます</li>
+  </ol>
+  <div style="margin-top:10px;color:#6b6b9a;">
+    ※ CSV の1行目はヘッダー行として扱われます。フォームのフィールド名がそのまま列名になります。
   </div>
-  <div class="hint-text">
-    <strong>設定方法:</strong><br>
-    1. Google Forms の回答を Google スプレッドシートに連携<br>
-    2. スプレッドシートを「ファイル → 共有 → ウェブに公開」→ CSV 形式で公開<br>
-    3. 公開 URL をこちらに貼り付けて保存<br>
-    ※ Microsoft Forms の場合は Excel をダウンロード → Google スプレッドシートにインポートして同様の手順で公開できます
-  </div>
-  <div style="display:flex;gap:10px;">
-    <button class="btn" onclick="saveConfig()">保存して読み込む</button>
-    <button class="btn" onclick="loadDemo()">デモデータで試す</button>
-  </div>
-  <div id="status"></div>
-</div>
+</details>
 
-<!-- Filter row -->
+<!-- Filter -->
 <div id="filter-row">
-  <input id="search" type="text" placeholder="キーワードで絞り込み…" oninput="renderTable()">
+  <input id="search" type="text" placeholder="キーワードで絞り込み…" oninput="render()">
   <span id="count"></span>
+  <span id="updated"></span>
 </div>
 
 <!-- Table -->
 <div class="table-wrap">
-  <div id="loading"><span class="spinner"></span>データを読み込み中…</div>
-  <div id="empty-state">表示するデータがありません。<br>設定から CSV URL を指定するか、デモデータをお試しください。</div>
-  <table id="log-table" style="display:none">
-    <thead id="thead"><tr></tr></thead>
+  <div id="message"><span class="spinner"></span>読み込み中…</div>
+  <table id="tbl" style="display:none">
+    <thead><tr id="thead-row"></tr></thead>
     <tbody id="tbody"></tbody>
   </table>
 </div>
 
 <script>
-const STORAGE_KEY = 'forms_log_csv_url';
-const REFRESH_SEC = 30;
-
-let allRows = [];
-let headers = [];
-let sortCol = 0;
-let sortAsc = false;
-let countdown = REFRESH_SEC;
-let countdownTimer = null;
-
-// Demo data (CSV format)
-const DEMO_CSV = `タイムスタンプ,名前,スコア,感想,言語
-2026-06-22 09:01,田中 一郎,320,とても楽しかった！,日本語
-2026-06-22 09:15,Sato Hanako,480,Fun and challenging!,English
-2026-06-22 10:02,山田 太郎,150,難しかったです,日本語
-2026-06-22 10:30,Yamamoto K.,560,Great game, loved the timer!,English
-2026-06-22 11:11,佐藤 花子,400,もっと単語を増やしてほしい,日本語
-2026-06-22 12:00,Tanaka J.,200,需要更多日语单词,日本語
-2026-06-22 13:22,鈴木 次郎,610,全問正解できた！,日本語
-2026-06-22 14:05,Kim Minjun,390,Would play again!,English
-2026-06-22 15:30,伊藤 恵美,270,タイマーが短い気がします,日本語
-2026-06-22 16:44,Chen Wei,520,Very fun word game,English`;
+let allRows = [], headers = [], sortCol = -1, sortAsc = true;
 
 function parseCSV(text) {
-  const lines = text.trim().split('\n').map(l => l.trim()).filter(Boolean);
-  if (lines.length < 2) return { headers: [], rows: [] };
+  const lines = text.trim().split(/\r?\n/).filter(Boolean);
+  if (lines.length < 1) return { headers: [], rows: [] };
+
   const parse = line => {
-    const result = [];
-    let cur = '', inQ = false;
+    const cols = []; let cur = '', inQ = false;
     for (let i = 0; i < line.length; i++) {
       const c = line[i];
       if (c === '"') { inQ = !inQ; }
-      else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
-      else { cur += c; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else cur += c;
     }
-    result.push(cur);
-    return result.map(s => s.trim());
+    cols.push(cur.trim());
+    return cols;
   };
+
   return {
     headers: parse(lines[0]),
     rows: lines.slice(1).map(parse)
   };
 }
 
-function getSavedUrl() {
-  return localStorage.getItem(STORAGE_KEY) || '';
-}
-
-function loadDemo() {
-  const { headers: h, rows: r } = parseCSV(DEMO_CSV);
-  headers = h;
-  allRows = r;
-  sortCol = 0; sortAsc = false;
-  renderTable();
-  setStatus('デモデータを表示しています', 'ok');
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('log-table').style.display = '';
-  document.getElementById('empty-state').style.display = 'none';
-}
-
-async function fetchData() {
-  const url = getSavedUrl();
-  if (!url) {
-    loadDemo();
-    return;
-  }
-
-  setStatus('読み込み中…', '');
-  document.getElementById('loading').style.display = 'block';
-  document.getElementById('log-table').style.display = 'none';
-  document.getElementById('empty-state').style.display = 'none';
+async function load() {
+  document.getElementById('message').innerHTML = '<span class="spinner"></span>読み込み中…';
+  document.getElementById('message').style.display = 'block';
+  document.getElementById('tbl').style.display = 'none';
 
   try {
-    // Use CORS proxy for Google Sheets
-    const proxyUrl = url.includes('docs.google.com')
-      ? `https://corsproxy.io/?${encodeURIComponent(url)}`
-      : url;
-    const res = await fetch(proxyUrl);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const res = await fetch('./logs.csv?t=' + Date.now());
+    if (!res.ok) throw new Error(`ファイルが見つかりません (HTTP ${res.status})`);
     const text = await res.text();
     const { headers: h, rows: r } = parseCSV(text);
-    if (!h.length) throw new Error('データが空です');
+    if (!h.length) throw new Error('CSV が空、またはヘッダー行がありません');
     headers = h;
     allRows = r;
-    sortCol = 0; sortAsc = false;
-    renderTable();
-    setStatus(`${r.length} 件 取得完了 (${now()})`, 'ok');
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('log-table').style.display = '';
+    sortCol = -1;
+    document.getElementById('updated').textContent = '最終読込: ' + new Date().toLocaleTimeString('ja-JP');
+    render();
+    document.getElementById('message').style.display = 'none';
+    document.getElementById('tbl').style.display = '';
   } catch (e) {
-    setStatus(`エラー: ${e.message}`, 'err');
-    document.getElementById('loading').style.display = 'none';
-    if (!allRows.length) document.getElementById('empty-state').style.display = 'block';
-    else document.getElementById('log-table').style.display = '';
+    document.getElementById('message').innerHTML =
+      `<span class="err">⚠ ${e.message}</span><br><br>` +
+      `上の「フォームズのログを反映させる方法」を参考に <code>logs.csv</code> をアップロードしてください。`;
   }
 }
 
-function renderTable() {
+function render() {
   const q = document.getElementById('search').value.toLowerCase();
+  let rows = allRows.filter(r => !q || r.some(c => c.toLowerCase().includes(q)));
 
-  let rows = allRows.filter(r =>
-    !q || r.some(c => c.toLowerCase().includes(q))
-  );
-
-  // Sort
-  rows.sort((a, b) => {
-    const av = a[sortCol] || '', bv = b[sortCol] || '';
-    return sortAsc ? av.localeCompare(bv, 'ja') : bv.localeCompare(av, 'ja');
-  });
+  if (sortCol >= 0) {
+    rows.sort((a, b) => {
+      const av = a[sortCol] || '', bv = b[sortCol] || '';
+      return sortAsc ? av.localeCompare(bv, 'ja') : bv.localeCompare(av, 'ja');
+    });
+  }
 
   document.getElementById('count').textContent = `${rows.length} / ${allRows.length} 件`;
 
-  // Render headers
-  const tr = document.querySelector('#thead tr');
+  // Headers
+  const tr = document.getElementById('thead-row');
   tr.innerHTML = '';
   headers.forEach((h, i) => {
     const th = document.createElement('th');
-    th.innerHTML = `${h}<span class="sort-icon"></span>`;
+    th.textContent = h;
     if (i === sortCol) th.classList.add(sortAsc ? 'asc' : 'desc');
-    th.onclick = () => {
-      if (sortCol === i) sortAsc = !sortAsc;
-      else { sortCol = i; sortAsc = true; }
-      renderTable();
-    };
+    th.onclick = () => { sortCol === i ? (sortAsc = !sortAsc) : (sortCol = i, sortAsc = true); render(); };
     tr.appendChild(th);
   });
 
-  // Render rows
+  // Rows
   const tbody = document.getElementById('tbody');
   tbody.innerHTML = '';
   rows.forEach(row => {
     const tr2 = document.createElement('tr');
     headers.forEach((_, i) => {
       const td = document.createElement('td');
-      td.textContent = row[i] || '';
+      td.textContent = row[i] ?? '';
       tr2.appendChild(td);
     });
     tbody.appendChild(tr2);
   });
 }
 
-function setStatus(msg, cls) {
-  const el = document.getElementById('status');
-  el.textContent = msg;
-  el.className = cls;
-}
-
-function toggleConfig() {
-  const p = document.getElementById('config-panel');
-  const open = p.classList.toggle('open');
-  if (open) {
-    document.getElementById('csv-url').value = getSavedUrl();
-  }
-}
-
-function saveConfig() {
-  const url = document.getElementById('csv-url').value.trim();
-  if (!url) { setStatus('URL を入力してください', 'err'); return; }
-  localStorage.setItem(STORAGE_KEY, url);
-  fetchData();
-  document.getElementById('config-panel').classList.remove('open');
-}
-
-function now() {
-  return new Date().toLocaleTimeString('ja-JP');
-}
-
-// Auto-refresh countdown
-function startCountdown() {
-  clearInterval(countdownTimer);
-  countdown = REFRESH_SEC;
-  countdownTimer = setInterval(() => {
-    countdown--;
-    document.getElementById('countdown').textContent = countdown;
-    if (countdown <= 0) {
-      countdown = REFRESH_SEC;
-      fetchData();
-    }
-  }, 1000);
-}
-
-// Init
-document.getElementById('loading').style.display = 'none';
-document.getElementById('empty-state').style.display = 'block';
-
-const savedUrl = getSavedUrl();
-if (savedUrl) {
-  fetchData();
-} else {
-  // Show demo by default
-  loadDemo();
-}
-startCountdown();
+load();
 </script>
 </body>
 </html>
