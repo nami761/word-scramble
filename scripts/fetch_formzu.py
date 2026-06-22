@@ -70,7 +70,7 @@ def try_csv_from_page(html: str, page_url: str) -> str | None:
             src, re.DOTALL)
         if fn_match:
             fn_body = fn_match.group(1)
-            print(f"  JS関数本体: {fn_body[:400]}", file=sys.stderr)
+            print(f"  JS関数本体:\n{fn_body[:2000]}", file=sys.stderr)
             # go.value = '...' パターンを探す
             m = re.search(r'\.go\.value\s*=\s*[\'"]([^\'"]+)[\'"]', fn_body)
             if m:
