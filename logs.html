@@ -305,6 +305,7 @@ const GRADE_CLASS = { '1年生':'g1','2年生':'g2','3年生':'g3','4年生':'g4
 let allRows = [], headers = [];
 let sortCol = -1, sortAsc = true;
 let gradeFilter = 'all';
+let lastCSVText = '';
 
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/).filter(Boolean);
@@ -322,18 +323,23 @@ function parseCSV(text) {
   return { headers: parse(lines[0]), rows: lines.slice(1).map(parse) };
 }
 
-async function loadCSV() {
+async function loadCSV(silent = false) {
   const msg = document.getElementById('message');
-  msg.innerHTML = '<span class="spinner"></span>読み込み中…';
-  msg.style.display = 'block';
-  document.getElementById('tbl').style.display = 'none';
+  if (!silent) {
+    msg.innerHTML = '<span class="spinner"></span>読み込み中…';
+    msg.style.display = 'block';
+    document.getElementById('tbl').style.display = 'none';
+  }
 
   try {
     const res = await fetch('./logs.csv?t=' + Date.now());
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
+    if (silent && text === lastCSVText) return; // 変更なし
+    lastCSVText = text;
     const { headers: h, rows: r } = parseCSV(text);
     if (!h.length) throw new Error('CSV が空です');
+    const prevCount = allRows.length;
     headers = h;
     allRows = r;
     sortCol = -1;
@@ -341,12 +347,31 @@ async function loadCSV() {
     render();
     msg.style.display = 'none';
     document.getElementById('tbl').style.display = '';
+    if (silent && allRows.length > prevCount) showNewBanner(allRows.length - prevCount);
   } catch (e) {
-    msg.innerHTML =
-      `<span class="err">⚠ データを読み込めませんでした（${e.message}）</span><br><br>` +
-      `上の手順で <code>logs.csv</code> をリポジトリに追加してください。`;
+    if (!silent) {
+      msg.innerHTML =
+        `<span class="err">⚠ データを読み込めませんでした（${e.message}）</span><br><br>` +
+        `上の手順で <code>logs.csv</code> をリポジトリに追加してください。`;
+    }
   }
 }
+
+function showNewBanner(n) {
+  const b = document.createElement('div');
+  b.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#7c3aed;color:#fff;padding:10px 22px;border-radius:999px;font-size:0.88rem;box-shadow:0 4px 16px #7c3aed44;z-index:999;';
+  b.textContent = `✨ ${n}件の新しい記録が追加されました`;
+  document.body.appendChild(b);
+  setTimeout(() => b.remove(), 4000);
+}
+
+// 5分ごとに自動チェック
+setInterval(() => loadCSV(true), 5 * 60 * 1000);
+
+// タブが再表示されたときも更新
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') loadCSV(true);
+});
 
 function setGrade(g) {
   gradeFilter = g;
