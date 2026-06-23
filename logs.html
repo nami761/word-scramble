@@ -489,7 +489,7 @@ function render() {
         td.className = 'book-cell';
         const a = document.createElement('a');
         a.textContent = val;
-        a.href = 'https://www.ehonnavi.net/search/?q=' + encodeURIComponent(val);
+        a.href = 'https://www.google.com/search?q=' + encodeURIComponent(val + ' 絵本ナビ');
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
         td.appendChild(a);
