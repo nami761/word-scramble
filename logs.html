@@ -210,7 +210,8 @@
     .meta-cell { color: #9d8ec0; font-size: 0.75rem; white-space: nowrap; }
 
     /* 本タイトル */
-    .book-cell { color: #d97706; font-weight: 500; }
+    .book-cell a { color: #d97706; font-weight: 500; text-decoration: none; }
+    .book-cell a:hover { text-decoration: underline; }
 
     /* State */
     #message {
@@ -486,7 +487,12 @@ function render() {
         td.appendChild(badge);
       } else if (i === COL.book) {
         td.className = 'book-cell';
-        td.textContent = val;
+        const a = document.createElement('a');
+        a.textContent = val;
+        a.href = 'https://www.ehonnavi.net/search/?q=' + encodeURIComponent(val);
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        td.appendChild(a);
       } else if (i === COL.note || i === COL.memo) {
         td.className = 'note-cell';
         td.innerHTML = val.replace(/\[br\]/gi, '<br>');
